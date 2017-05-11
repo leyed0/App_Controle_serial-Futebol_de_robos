@@ -1,12 +1,6 @@
 #pragma once
-
-#include <iostream>
-#include <Windows.h>
-#include <Xinput.h>
-
+#include "SDL.h"
 //https://github.com/wjwwood/serial biblioteca crossplatform para Comunicação Serial
-using std::cout;
-using std::endl;
 
 namespace serial_app {
 	
@@ -372,6 +366,7 @@ namespace serial_app {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public: System::Void commands_Load(System::Object^  sender, System::EventArgs^  e) {
+		SDL_Init(SDL_INIT_EVERYTHING);
 		SerialTimer->Enabled = true;
 	}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -458,7 +453,7 @@ private: System::Void SerialTimer_Tick(System::Object^  sender, System::EventArg
 			}
 			catch (Exception^ e)
 			{
-
+				MessageBox::Show(e->Message);
 			}
 		}
 	}
