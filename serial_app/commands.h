@@ -1,7 +1,15 @@
 #pragma once
 
-namespace serial_app {
+#include <iostream>
+#include <Windows.h>
+#include <Xinput.h>
 
+//https://github.com/wjwwood/serial biblioteca crossplatform para Comunicação Serial
+using std::cout;
+using std::endl;
+
+namespace serial_app {
+	
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -16,6 +24,7 @@ namespace serial_app {
 	public ref class commands : public System::Windows::Forms::Form
 	{
 	public:
+		
 		commands(System::String^ Port, System::Int32 Baud)
 		{
 			InitializeComponent();
@@ -46,15 +55,8 @@ namespace serial_app {
 	private: bool Directionalcontroll = false;
 	private: System::IO::Ports::SerialPort^  serial;
 	private: System::Windows::Forms::CheckBox^  DirEn;
-
-
-
-
-
-
 	private: String^ tmpstr;
 	private: System::Windows::Forms::Timer^  CmdTimer;
-
 	private: System::Windows::Forms::GroupBox^  groupBox1;
 	private: System::Windows::Forms::TextBox^  CmdRIGHT;
 	private: System::Windows::Forms::TextBox^  CmdDOWN;
