@@ -1,9 +1,8 @@
 #pragma once
-#include "SDL.h"
+#include "SDLWindow.h"
 //https://github.com/wjwwood/serial biblioteca crossplatform para Comunicação Serial
 
 namespace serial_app {
-	
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -19,39 +18,30 @@ namespace serial_app {
 	{
 	public:
 		
-		commands(System::String^ Port, System::Int32 Baud)
-		{
-			InitializeComponent();
-			serial = gcnew SerialPort(Port, Baud);
-			serial->ReadTimeout = 50;
-			try
-			{
-				serial->Open();
-			}
-			catch (Exception^ e)
-			{
-				throw e;
-			}
-		}
+		commands(System::String^ Port, System::Int32 Baud);
 
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		~commands()
-		{
-			if (components)
-			{
-				delete components;
-			}
-		}
+		~commands();
+
+		///<summary>
+		///user created variables.
+		///</summary>
 	private: bool serialbusy = false;
 	private: bool Directionalcontroll = false;
+	private: String^ tmpstr;
+			 ///<summary>
+			 ///app created objects.
+			 ///</summary>
+	private: int *LastAxVal;
+	private: SDLWindow *SDLWin;
 	private: System::IO::Ports::SerialPort^  serial;
 	private: System::Windows::Forms::CheckBox^  DirEn;
-	private: String^ tmpstr;
 	private: System::Windows::Forms::Timer^  CmdTimer;
-	private: System::Windows::Forms::GroupBox^  groupBox1;
+	private: System::Windows::Forms::GroupBox^  CommandsBox;
+
 	private: System::Windows::Forms::TextBox^  CmdRIGHT;
 	private: System::Windows::Forms::TextBox^  CmdDOWN;
 	private: System::Windows::Forms::Label^  label6;
@@ -62,7 +52,8 @@ namespace serial_app {
 	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::Label^  label7;
 	private: System::Windows::Forms::RichTextBox^  Historico;
-	private: System::Windows::Forms::GroupBox^  groupBox2;
+	private: System::Windows::Forms::GroupBox^  SerialTimerBox;
+
 	private: System::Windows::Forms::NumericUpDown^  TimerMilis;
 	private: System::Windows::Forms::TextBox^  TimerCmd;
 	private: System::Windows::Forms::CheckBox^  TimerEnable;
@@ -71,9 +62,25 @@ namespace serial_app {
 	private: System::Windows::Forms::TextBox^  Console;
 	private: System::Windows::Forms::Timer^  SerialTimer;
 	private: System::Windows::Forms::Label^  Bufferlbl;
+	private: System::Windows::Forms::ComboBox^  JoyLst;
+	private: System::Windows::Forms::Label^  label8;
+	private: System::Windows::Forms::Button^  ConnJoy;
+	private: System::Windows::Forms::Button^  RefreshJoys;
+	private: System::Windows::Forms::GroupBox^  JoystickBox;
 
-
-
+	private: System::Windows::Forms::Label^  Ax5Val;
+	private: System::Windows::Forms::Label^  Ax5lbl;
+	private: System::Windows::Forms::Label^  Ax3Val;
+	private: System::Windows::Forms::Label^  Ax3lbl;
+	private: System::Windows::Forms::Label^  Ax1Val;
+	private: System::Windows::Forms::Label^  Ax1lbl;
+	private: System::Windows::Forms::Label^  Ax4Val;
+	private: System::Windows::Forms::Label^  Ax4lbl;
+	private: System::Windows::Forms::Label^  Ax2Val;
+	private: System::Windows::Forms::Label^  Ax2lbl;
+	private: System::Windows::Forms::Label^  Ax0Val;
+	private: System::Windows::Forms::Label^  Ax0Lbl;
+	private: System::Windows::Forms::Button^  DisconnJoy;
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -94,7 +101,7 @@ namespace serial_app {
 			this->serial = (gcnew System::IO::Ports::SerialPort(this->components));
 			this->DirEn = (gcnew System::Windows::Forms::CheckBox());
 			this->CmdTimer = (gcnew System::Windows::Forms::Timer(this->components));
-			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->CommandsBox = (gcnew System::Windows::Forms::GroupBox());
 			this->CmdRIGHT = (gcnew System::Windows::Forms::TextBox());
 			this->CmdDOWN = (gcnew System::Windows::Forms::TextBox());
 			this->label6 = (gcnew System::Windows::Forms::Label());
@@ -105,7 +112,7 @@ namespace serial_app {
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->Historico = (gcnew System::Windows::Forms::RichTextBox());
-			this->groupBox2 = (gcnew System::Windows::Forms::GroupBox());
+			this->SerialTimerBox = (gcnew System::Windows::Forms::GroupBox());
 			this->TimerMilis = (gcnew System::Windows::Forms::NumericUpDown());
 			this->TimerCmd = (gcnew System::Windows::Forms::TextBox());
 			this->TimerEnable = (gcnew System::Windows::Forms::CheckBox());
@@ -114,47 +121,64 @@ namespace serial_app {
 			this->Console = (gcnew System::Windows::Forms::TextBox());
 			this->SerialTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->Bufferlbl = (gcnew System::Windows::Forms::Label());
-			this->groupBox1->SuspendLayout();
-			this->groupBox2->SuspendLayout();
+			this->JoyLst = (gcnew System::Windows::Forms::ComboBox());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->ConnJoy = (gcnew System::Windows::Forms::Button());
+			this->RefreshJoys = (gcnew System::Windows::Forms::Button());
+			this->JoystickBox = (gcnew System::Windows::Forms::GroupBox());
+			this->DisconnJoy = (gcnew System::Windows::Forms::Button());
+			this->Ax5Val = (gcnew System::Windows::Forms::Label());
+			this->Ax5lbl = (gcnew System::Windows::Forms::Label());
+			this->Ax3Val = (gcnew System::Windows::Forms::Label());
+			this->Ax3lbl = (gcnew System::Windows::Forms::Label());
+			this->Ax1Val = (gcnew System::Windows::Forms::Label());
+			this->Ax1lbl = (gcnew System::Windows::Forms::Label());
+			this->Ax4Val = (gcnew System::Windows::Forms::Label());
+			this->Ax4lbl = (gcnew System::Windows::Forms::Label());
+			this->Ax2Val = (gcnew System::Windows::Forms::Label());
+			this->Ax2lbl = (gcnew System::Windows::Forms::Label());
+			this->Ax0Val = (gcnew System::Windows::Forms::Label());
+			this->Ax0Lbl = (gcnew System::Windows::Forms::Label());
+			this->CommandsBox->SuspendLayout();
+			this->SerialTimerBox->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TimerMilis))->BeginInit();
+			this->JoystickBox->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// serial
 			// 
 			this->serial->RtsEnable = true;
-			this->serial->DataReceived += gcnew System::IO::Ports::SerialDataReceivedEventHandler(this, &commands::serial_DataReceived);
 			// 
 			// DirEn
 			// 
 			this->DirEn->AutoSize = true;
-			this->DirEn->Location = System::Drawing::Point(13, 13);
+			this->DirEn->Location = System::Drawing::Point(12, 14);
 			this->DirEn->Name = L"DirEn";
-			this->DirEn->Size = System::Drawing::Size(158, 17);
+			this->DirEn->Size = System::Drawing::Size(103, 17);
 			this->DirEn->TabIndex = 4;
-			this->DirEn->Text = L"Controle Por Caixa de Texto";
+			this->DirEn->Text = L"TextBox Controll";
 			this->DirEn->UseVisualStyleBackColor = true;
-			this->DirEn->CheckedChanged += gcnew System::EventHandler(this, &commands::DirEn_CheckedChanged);
 			// 
 			// CmdTimer
 			// 
 			this->CmdTimer->Tick += gcnew System::EventHandler(this, &commands::timer1_Tick);
 			// 
-			// groupBox1
+			// CommandsBox
 			// 
-			this->groupBox1->Controls->Add(this->CmdRIGHT);
-			this->groupBox1->Controls->Add(this->CmdDOWN);
-			this->groupBox1->Controls->Add(this->label6);
-			this->groupBox1->Controls->Add(this->label4);
-			this->groupBox1->Controls->Add(this->CmdLEFT);
-			this->groupBox1->Controls->Add(this->label5);
-			this->groupBox1->Controls->Add(this->CmdUP);
-			this->groupBox1->Controls->Add(this->label3);
-			this->groupBox1->Location = System::Drawing::Point(13, 136);
-			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(200, 124);
-			this->groupBox1->TabIndex = 3;
-			this->groupBox1->TabStop = false;
-			this->groupBox1->Text = L"Comandos:";
+			this->CommandsBox->Controls->Add(this->CmdRIGHT);
+			this->CommandsBox->Controls->Add(this->CmdDOWN);
+			this->CommandsBox->Controls->Add(this->label6);
+			this->CommandsBox->Controls->Add(this->label4);
+			this->CommandsBox->Controls->Add(this->CmdLEFT);
+			this->CommandsBox->Controls->Add(this->label5);
+			this->CommandsBox->Controls->Add(this->CmdUP);
+			this->CommandsBox->Controls->Add(this->label3);
+			this->CommandsBox->Location = System::Drawing::Point(12, 137);
+			this->CommandsBox->Name = L"CommandsBox";
+			this->CommandsBox->Size = System::Drawing::Size(200, 124);
+			this->CommandsBox->TabIndex = 3;
+			this->CommandsBox->TabStop = false;
+			this->CommandsBox->Text = L"Commands:";
 			// 
 			// CmdRIGHT
 			// 
@@ -223,34 +247,34 @@ namespace serial_app {
 			// label7
 			// 
 			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(10, 42);
+			this->label7->Location = System::Drawing::Point(9, 43);
 			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(147, 13);
+			this->label7->Size = System::Drawing::Size(150, 13);
 			this->label7->TabIndex = 1;
-			this->label7->Text = L"Manter a caixa de texto ativa:";
+			this->label7->Text = L"Keep TextBox active to send :";
 			// 
 			// Historico
 			// 
-			this->Historico->Location = System::Drawing::Point(240, 11);
+			this->Historico->Location = System::Drawing::Point(239, 12);
 			this->Historico->Name = L"Historico";
 			this->Historico->Size = System::Drawing::Size(276, 231);
 			this->Historico->TabIndex = 7;
 			this->Historico->Text = L"";
 			this->Historico->TextChanged += gcnew System::EventHandler(this, &commands::Historico_TextChanged);
 			// 
-			// groupBox2
+			// SerialTimerBox
 			// 
-			this->groupBox2->Controls->Add(this->TimerMilis);
-			this->groupBox2->Controls->Add(this->TimerCmd);
-			this->groupBox2->Controls->Add(this->TimerEnable);
-			this->groupBox2->Controls->Add(this->label2);
-			this->groupBox2->Controls->Add(this->label1);
-			this->groupBox2->Location = System::Drawing::Point(12, 65);
-			this->groupBox2->Name = L"groupBox2";
-			this->groupBox2->Size = System::Drawing::Size(200, 65);
-			this->groupBox2->TabIndex = 8;
-			this->groupBox2->TabStop = false;
-			this->groupBox2->Text = L"Timer";
+			this->SerialTimerBox->Controls->Add(this->TimerMilis);
+			this->SerialTimerBox->Controls->Add(this->TimerCmd);
+			this->SerialTimerBox->Controls->Add(this->TimerEnable);
+			this->SerialTimerBox->Controls->Add(this->label2);
+			this->SerialTimerBox->Controls->Add(this->label1);
+			this->SerialTimerBox->Location = System::Drawing::Point(11, 66);
+			this->SerialTimerBox->Name = L"SerialTimerBox";
+			this->SerialTimerBox->Size = System::Drawing::Size(200, 65);
+			this->SerialTimerBox->TabIndex = 8;
+			this->SerialTimerBox->TabStop = false;
+			this->SerialTimerBox->Text = L"Timer";
 			// 
 			// TimerMilis
 			// 
@@ -298,7 +322,7 @@ namespace serial_app {
 			// 
 			// Console
 			// 
-			this->Console->Location = System::Drawing::Point(168, 39);
+			this->Console->Location = System::Drawing::Point(167, 40);
 			this->Console->Name = L"Console";
 			this->Console->Size = System::Drawing::Size(65, 20);
 			this->Console->TabIndex = 5;
@@ -313,150 +337,245 @@ namespace serial_app {
 			// Bufferlbl
 			// 
 			this->Bufferlbl->AutoSize = true;
-			this->Bufferlbl->Location = System::Drawing::Point(459, 250);
+			this->Bufferlbl->Location = System::Drawing::Point(480, 255);
 			this->Bufferlbl->Name = L"Bufferlbl";
 			this->Bufferlbl->Size = System::Drawing::Size(35, 13);
 			this->Bufferlbl->TabIndex = 1;
 			this->Bufferlbl->Text = L"Buffer";
 			// 
+			// JoyLst
+			// 
+			this->JoyLst->FormattingEnabled = true;
+			this->JoyLst->Location = System::Drawing::Point(60, 23);
+			this->JoyLst->Name = L"JoyLst";
+			this->JoyLst->Size = System::Drawing::Size(28, 21);
+			this->JoyLst->TabIndex = 9;
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Location = System::Drawing::Point(6, 26);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(48, 13);
+			this->label8->TabIndex = 10;
+			this->label8->Text = L"Joystick:";
+			// 
+			// ConnJoy
+			// 
+			this->ConnJoy->Location = System::Drawing::Point(94, 23);
+			this->ConnJoy->Name = L"ConnJoy";
+			this->ConnJoy->Size = System::Drawing::Size(55, 23);
+			this->ConnJoy->TabIndex = 11;
+			this->ConnJoy->Text = L"Connect";
+			this->ConnJoy->UseVisualStyleBackColor = true;
+			this->ConnJoy->Click += gcnew System::EventHandler(this, &commands::ConnJoys_Click);
+			// 
+			// RefreshJoys
+			// 
+			this->RefreshJoys->Location = System::Drawing::Point(155, 24);
+			this->RefreshJoys->Name = L"RefreshJoys";
+			this->RefreshJoys->Size = System::Drawing::Size(49, 23);
+			this->RefreshJoys->TabIndex = 11;
+			this->RefreshJoys->Text = L"Reload";
+			this->RefreshJoys->UseVisualStyleBackColor = true;
+			this->RefreshJoys->Click += gcnew System::EventHandler(this, &commands::RefreshJoys_Click);
+			// 
+			// JoystickBox
+			// 
+			this->JoystickBox->Controls->Add(this->DisconnJoy);
+			this->JoystickBox->Controls->Add(this->Ax5Val);
+			this->JoystickBox->Controls->Add(this->Ax5lbl);
+			this->JoystickBox->Controls->Add(this->Ax3Val);
+			this->JoystickBox->Controls->Add(this->Ax3lbl);
+			this->JoystickBox->Controls->Add(this->Ax1Val);
+			this->JoystickBox->Controls->Add(this->Ax1lbl);
+			this->JoystickBox->Controls->Add(this->Ax4Val);
+			this->JoystickBox->Controls->Add(this->Ax4lbl);
+			this->JoystickBox->Controls->Add(this->Ax2Val);
+			this->JoystickBox->Controls->Add(this->Ax2lbl);
+			this->JoystickBox->Controls->Add(this->Ax0Val);
+			this->JoystickBox->Controls->Add(this->Ax0Lbl);
+			this->JoystickBox->Controls->Add(this->label8);
+			this->JoystickBox->Controls->Add(this->RefreshJoys);
+			this->JoystickBox->Controls->Add(this->JoyLst);
+			this->JoystickBox->Controls->Add(this->ConnJoy);
+			this->JoystickBox->Location = System::Drawing::Point(522, 14);
+			this->JoystickBox->Name = L"JoystickBox";
+			this->JoystickBox->Size = System::Drawing::Size(213, 229);
+			this->JoystickBox->TabIndex = 12;
+			this->JoystickBox->TabStop = false;
+			this->JoystickBox->Text = L"Joystick";
+			// 
+			// DisconnJoy
+			// 
+			this->DisconnJoy->Location = System::Drawing::Point(119, 52);
+			this->DisconnJoy->Name = L"DisconnJoy";
+			this->DisconnJoy->Size = System::Drawing::Size(75, 23);
+			this->DisconnJoy->TabIndex = 13;
+			this->DisconnJoy->Text = L"Disconnect";
+			this->DisconnJoy->UseVisualStyleBackColor = true;
+			this->DisconnJoy->Click += gcnew System::EventHandler(this, &commands::DisconnJoy_Click);
+			// 
+			// Ax5Val
+			// 
+			this->Ax5Val->AutoSize = true;
+			this->Ax5Val->Location = System::Drawing::Point(60, 205);
+			this->Ax5Val->Name = L"Ax5Val";
+			this->Ax5Val->Size = System::Drawing::Size(0, 13);
+			this->Ax5Val->TabIndex = 12;
+			// 
+			// Ax5lbl
+			// 
+			this->Ax5lbl->AutoSize = true;
+			this->Ax5lbl->Location = System::Drawing::Point(20, 205);
+			this->Ax5lbl->Name = L"Ax5lbl";
+			this->Ax5lbl->Size = System::Drawing::Size(34, 13);
+			this->Ax5lbl->TabIndex = 12;
+			this->Ax5lbl->Text = L"axis5:";
+			// 
+			// Ax3Val
+			// 
+			this->Ax3Val->AutoSize = true;
+			this->Ax3Val->Location = System::Drawing::Point(60, 160);
+			this->Ax3Val->Name = L"Ax3Val";
+			this->Ax3Val->Size = System::Drawing::Size(0, 13);
+			this->Ax3Val->TabIndex = 12;
+			// 
+			// Ax3lbl
+			// 
+			this->Ax3lbl->AutoSize = true;
+			this->Ax3lbl->Location = System::Drawing::Point(20, 160);
+			this->Ax3lbl->Name = L"Ax3lbl";
+			this->Ax3lbl->Size = System::Drawing::Size(34, 13);
+			this->Ax3lbl->TabIndex = 12;
+			this->Ax3lbl->Text = L"axis3:";
+			// 
+			// Ax1Val
+			// 
+			this->Ax1Val->AutoSize = true;
+			this->Ax1Val->Location = System::Drawing::Point(60, 114);
+			this->Ax1Val->Name = L"Ax1Val";
+			this->Ax1Val->Size = System::Drawing::Size(0, 13);
+			this->Ax1Val->TabIndex = 12;
+			// 
+			// Ax1lbl
+			// 
+			this->Ax1lbl->AutoSize = true;
+			this->Ax1lbl->Location = System::Drawing::Point(20, 114);
+			this->Ax1lbl->Name = L"Ax1lbl";
+			this->Ax1lbl->Size = System::Drawing::Size(34, 13);
+			this->Ax1lbl->TabIndex = 12;
+			this->Ax1lbl->Text = L"axis1:";
+			// 
+			// Ax4Val
+			// 
+			this->Ax4Val->AutoSize = true;
+			this->Ax4Val->Location = System::Drawing::Point(60, 182);
+			this->Ax4Val->Name = L"Ax4Val";
+			this->Ax4Val->Size = System::Drawing::Size(0, 13);
+			this->Ax4Val->TabIndex = 12;
+			// 
+			// Ax4lbl
+			// 
+			this->Ax4lbl->AutoSize = true;
+			this->Ax4lbl->Location = System::Drawing::Point(20, 182);
+			this->Ax4lbl->Name = L"Ax4lbl";
+			this->Ax4lbl->Size = System::Drawing::Size(34, 13);
+			this->Ax4lbl->TabIndex = 12;
+			this->Ax4lbl->Text = L"axis4:";
+			// 
+			// Ax2Val
+			// 
+			this->Ax2Val->AutoSize = true;
+			this->Ax2Val->Location = System::Drawing::Point(60, 137);
+			this->Ax2Val->Name = L"Ax2Val";
+			this->Ax2Val->Size = System::Drawing::Size(0, 13);
+			this->Ax2Val->TabIndex = 12;
+			// 
+			// Ax2lbl
+			// 
+			this->Ax2lbl->AutoSize = true;
+			this->Ax2lbl->Location = System::Drawing::Point(20, 137);
+			this->Ax2lbl->Name = L"Ax2lbl";
+			this->Ax2lbl->Size = System::Drawing::Size(34, 13);
+			this->Ax2lbl->TabIndex = 12;
+			this->Ax2lbl->Text = L"axis2:";
+			// 
+			// Ax0Val
+			// 
+			this->Ax0Val->AutoSize = true;
+			this->Ax0Val->Location = System::Drawing::Point(60, 91);
+			this->Ax0Val->Name = L"Ax0Val";
+			this->Ax0Val->Size = System::Drawing::Size(0, 13);
+			this->Ax0Val->TabIndex = 12;
+			// 
+			// Ax0Lbl
+			// 
+			this->Ax0Lbl->AutoSize = true;
+			this->Ax0Lbl->Location = System::Drawing::Point(20, 91);
+			this->Ax0Lbl->Name = L"Ax0Lbl";
+			this->Ax0Lbl->Size = System::Drawing::Size(34, 13);
+			this->Ax0Lbl->TabIndex = 12;
+			this->Ax0Lbl->Text = L"axis0:";
+			// 
 			// commands
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(528, 272);
-			this->Controls->Add(this->groupBox2);
+			this->ClientSize = System::Drawing::Size(743, 275);
+			this->Controls->Add(this->JoystickBox);
+			this->Controls->Add(this->SerialTimerBox);
 			this->Controls->Add(this->Historico);
-			this->Controls->Add(this->groupBox1);
+			this->Controls->Add(this->CommandsBox);
 			this->Controls->Add(this->Bufferlbl);
 			this->Controls->Add(this->Console);
 			this->Controls->Add(this->label7);
 			this->Controls->Add(this->DirEn);
 			this->Name = L"commands";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-			this->Text = L"commands";
+			this->Text = L"SerialCommunication";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &commands::commands_FormClosing);
-			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &commands::commands_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &commands::commands_Load);
-			this->groupBox1->ResumeLayout(false);
-			this->groupBox1->PerformLayout();
-			this->groupBox2->ResumeLayout(false);
-			this->groupBox2->PerformLayout();
+			this->CommandsBox->ResumeLayout(false);
+			this->CommandsBox->PerformLayout();
+			this->SerialTimerBox->ResumeLayout(false);
+			this->SerialTimerBox->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TimerMilis))->EndInit();
+			this->JoystickBox->ResumeLayout(false);
+			this->JoystickBox->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
+	private: void listJoys();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	private: System::Void checkBox1_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-		try
-		{
-			CmdTimer->Interval = Convert::ToInt32(TimerMilis->Text);
-			CmdTimer->Enabled = TimerEnable->Checked;
-		}
-		catch (Exception^ e)
-		{
-			if(TimerEnable->Checked == true)
-				if(e->HResult == -2146233086) MessageBox::Show("Valor em milis invalido!");
-				else MessageBox::Show(Convert::ToString(e->HResult));
-			TimerEnable->Checked = false;
-		}
-	}
+	private: System::Void checkBox1_CheckedChanged(System::Object^  sender, System::EventArgs^  e);
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public: System::Void commands_Load(System::Object^  sender, System::EventArgs^  e);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	public: System::Void commands_Load(System::Object^  sender, System::EventArgs^  e) {
-		SDL_Init(SDL_INIT_EVERYTHING);
-		SerialTimer->Enabled = true;
-	}
+	private: System::Void Console_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	private: System::Void Console_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-		if (DirEn->Checked && !serialbusy) {
-			String^ Write="";
-			switch (e->KeyData)
-			{
-			case Keys::Up:
-				Write += (CmdUP->Text);
-				break;
-			case Keys::Down:
-				Write += (CmdDOWN->Text);
-				break;
-			case Keys::Left:
-				Write += (CmdLEFT->Text);
-				break;
-			case Keys::Right:
-				Write += (CmdRIGHT->Text);
-				break;
-			default:
-				Write = "";
-				break;
-			}
-			if (Write != "")
-			{
-				serial->Write(Write);
-				serialbusy = true;
-				Historico->Text += "W - " + Write + "\n";
-			}
-			else
-			{
-				Historico->Text += "No Data To Transmit!\n";
-				return;
-			}
-		}
-	}
-
+	private: System::Void commands_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	private: System::Void commands_FormClosing(System::Object^  sender, System::Windows::Forms::FormClosingEventArgs^  e) {
-		SerialTimer->Enabled = false;
-		serial->Close();
-		CmdTimer->Enabled = false;
-	}
+	private: System::Void Historico_TextChanged(System::Object^  sender, System::EventArgs^  e);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	private: System::Void commands_FormClosed(System::Object^  sender, System::Windows::Forms::FormClosedEventArgs^  e) {
-	}
-private: System::Void Historico_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-	Historico->SelectionStart = Historico->Text->Length;
-	Historico->ScrollToCaret();
-}
-private: System::Void Console_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-	Console->Clear();
-}
-private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-	if(TimerCmd->Text != "")
-		serial->Write(TimerCmd->Text);
-		Historico->Text += "W - " + TimerCmd->Text + "\n";
-}
-private: System::Void DirEn_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-}
-private: System::Void TimerMilis_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
-	CmdTimer->Interval = Convert::ToInt32(TimerMilis->Text);
-}
-private: System::Void serial_DataReceived(System::Object^  sender, System::IO::Ports::SerialDataReceivedEventArgs^  e) {
-	MessageBox::Show("teste");
-}
-private: System::Void SerialTimer_Tick(System::Object^  sender, System::EventArgs^  e) {
-	if (serial->IsOpen) {
-		if (serial->BytesToRead > 0)
-		{
-			Historico->Text += "R - " + serial->ReadExisting() + "\n";
-			serialbusy = false;
-		}
-	}
-	else {
-		Historico->Text += "Erro: Serial Desconectado.";
-		while (!serial->IsOpen) {
-			try
-			{
-				serial->Open();
-			}
-			catch (Exception^ e)
-			{
-				MessageBox::Show(e->Message);
-			}
-		}
-	}
-}
+	private: System::Void Console_TextChanged(System::Object^  sender, System::EventArgs^  e);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	private: System::Void TimerMilis_ValueChanged(System::Object^  sender, System::EventArgs^  e);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	private: System::Void SerialTimer_Tick(System::Object^  sender, System::EventArgs^  e);
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private: System::Void ConnJoys_Click(System::Object^  sender, System::EventArgs^  e);
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private: System::Void RefreshJoys_Click(System::Object^  sender, System::EventArgs^  e);
+		 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private: int JoyToHB(int);
+		 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private: void JoystickWatch();
+		 void SetMotor(int, int);
+private: System::Void DisconnJoy_Click(System::Object^  sender, System::EventArgs^  e);
 };
 }
