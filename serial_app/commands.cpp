@@ -1,5 +1,9 @@
 #include "commands.h"
 
+
+//serial sempre envia chars (8 bits)
+
+
 using namespace serial_app;
 
 System::Void serial_app::commands::DisconnJoy_Click(System::Object ^ sender, System::EventArgs ^ e)
