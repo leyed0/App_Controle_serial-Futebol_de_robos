@@ -3,6 +3,7 @@
 //https://github.com/wjwwood/serial biblioteca crossplatform para Comunicação Serial
 
 namespace serial_app {
+	using namespace Windows;
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
