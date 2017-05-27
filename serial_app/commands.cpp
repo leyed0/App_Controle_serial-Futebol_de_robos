@@ -11,6 +11,17 @@ System::Void serial_app::commands::DisconnJoy_Click(System::Object ^ sender, Sys
 	SDLWin->JoystickDisconnect();
 }
 
+bool serial_app::commands::SendSerial(String^ str)
+{
+	if (!serialbusy) {
+		serialbusy = true;
+		serial->Write(str);
+		serialbusy = false;
+		return true;
+	}
+	else return false;
+}
+
 
 commands::commands(System::String^ Port, System::Int32 Baud)
 {
@@ -172,25 +183,25 @@ int commands::JoyToHB(int axis) {
 
 void commands::JoystickWatch()
 {
-	//Bufferlbl->Text = Convert::ToString(JoyToHB(0));
-	Ax0Val->Text = Convert::ToString(JoyToHB(0));
-	Ax1Val->Text = Convert::ToString(JoyToHB(1));
-	Ax2Val->Text = Convert::ToString(JoyToHB(2));
-	Ax3Val->Text = Convert::ToString(JoyToHB(3));
-	Ax4Val->Text = Convert::ToString(JoyToHB(4));
-	Ax5Val->Text = Convert::ToString(JoyToHB(5));
+	if (!serialbusy) {
+		//Bufferlbl->Text = Convert::ToString(JoyToHB(0));
+		Ax0Val->Text = Convert::ToString(JoyToHB(0));
+		Ax1Val->Text = Convert::ToString(JoyToHB(1));
+		Ax2Val->Text = Convert::ToString(JoyToHB(2));
+		Ax3Val->Text = Convert::ToString(JoyToHB(3));
+		Ax4Val->Text = Convert::ToString(JoyToHB(4));
+		Ax5Val->Text = Convert::ToString(JoyToHB(5));
 
-	if (JoyToHB(1) != LastAxVal[1]) {
-		LastAxVal[1] = JoyToHB(1);
-		SetMotor(1, -LastAxVal[1]);
-	}
-	if (JoyToHB(4) != LastAxVal[4]) {
-		LastAxVal[4] = JoyToHB(4);
-		SetMotor(2, -LastAxVal[4]);
+		if (JoyToHB(1) != LastAxVal[1]) {
+			if(SetMotor(1, -LastAxVal[1])) LastAxVal[1] = JoyToHB(1);
+		}
+		if (JoyToHB(4) != LastAxVal[4]) {
+			if(SetMotor(2, -LastAxVal[4])) LastAxVal[4] = JoyToHB(4);
+		}
 	}
 }
 
-void commands::SetMotor(int motor, int speed) {
+bool commands::SetMotor(int motor, int speed) {
 	int dir = 0;
 	if (abs(speed) >= 20) {
 		if (speed >= 0) dir = 1;
@@ -201,5 +212,6 @@ void commands::SetMotor(int motor, int speed) {
 		String^ msg = "s" + motor + "." + abs(speed) + "." + dir + ".";
 		//MessageBox::Show(msg);
 		Bufferlbl->Text = msg;
-		serial->Write(msg);
+		if (SendSerial(msg)) return true;
+		else return false;
 }
