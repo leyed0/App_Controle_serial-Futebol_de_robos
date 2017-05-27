@@ -1,6 +1,6 @@
 #pragma once
 #include "SDLWindow.h"
-//https://github.com/wjwwood/serial biblioteca crossplatform para Comunicação Serial
+//https://github.com/wjwwood/serial biblioteca crossplatform para Comunicação Serial//
 
 namespace serial_app {
 	using namespace Windows;
