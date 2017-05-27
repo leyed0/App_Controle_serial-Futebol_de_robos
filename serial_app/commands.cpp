@@ -126,6 +126,7 @@ Void commands::TimerMilis_ValueChanged(System::Object^  sender, System::EventArg
 }
 
 Void commands::SerialTimer_Tick(System::Object^  sender, System::EventArgs^  e) {
+	SerialTimer->Stop();
 	JoystickWatch();
 	if(!SDLWin->Busy()) SDLWin->MainLoop();
 	if (serial->IsOpen) {
@@ -137,17 +138,20 @@ Void commands::SerialTimer_Tick(System::Object^  sender, System::EventArgs^  e) 
 	}
 	else {
 		Historico->Text += "Erro: Serial Desconectado.";
+		
 		while (!serial->IsOpen) {
-			try
-			{
-				serial->Open();
-			}
-			catch (Exception^ e)
-			{
-				MessageBox::Show(e->Message);
+			if (MessageBox::Show("Conexão com dispositivo perdida. Reconectar?", "Error!", MessageBoxButtons::OKCancel, MessageBoxIcon::Exclamation) == System::Windows::Forms::DialogResult::OK) {
+				try
+				{
+					serial->Open();
+				}
+				catch (Exception^)
+				{
+				}
 			}
 		}
 	}
+	SerialTimer->Start();
 }
 
 Void commands::ConnJoys_Click(System::Object^  sender, System::EventArgs^  e) {
@@ -163,7 +167,7 @@ System::Void serial_app::commands::RefreshJoys_Click(System::Object ^ sender, Sy
 }
 
 int commands::JoyToHB(int axis) {
-	return SDLWin->JoystickGetAxis(axis) / 128.3;
+	return (int)SDLWin->JoystickGetAxis(axis) / 128.3;
 }
 
 void commands::JoystickWatch()

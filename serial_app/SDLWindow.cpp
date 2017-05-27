@@ -70,9 +70,9 @@ unsigned int SDLWindow::Joystick_255(int axis)
 {
 	unsigned int ret;
 	if(ret = SDL_JoystickGetAxis(Joystick, axis) - Deadzone[axis]<=0) return 0;
-	else return ret / 128.3;
+	else return (int)ret / 128.3;
 }
 
 void SDLWindow::JoystickSetDZ(int axis, int val) {
-	Deadzone[axis] = val * 128.4980392156863;
+	Deadzone[axis] = (int)val * 128.4980392156863;
 }
