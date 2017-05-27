@@ -188,6 +188,16 @@
     <Text Include="LOG.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Release\SDL2.dll" />
+    <None Include="..\Release\serial_app.exe" />
+    <None Include="..\Release\serial_app.exe.metagen" />
+    <None Include="..\Release\serial_app.pdb" />
+    <None Include="..\x64\Release\SDL2.dll" />
+    <None Include="..\x64\Release\serial_app.exe" />
+    <None Include="..\x64\Release\serial_app.exe.metagen" />
+    <None Include="..\x64\Release\serial_app.pdb" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />
