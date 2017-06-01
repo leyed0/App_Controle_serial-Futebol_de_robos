@@ -22,6 +22,12 @@ bool serial_app::commands::SendSerial(String^ str)
 	else return false;
 }
 
+System::Void serial_app::commands::CorrectionChanged(System::Object ^ sender, System::EventArgs ^ e)
+{
+	correctionmotor[0] = Convert::ToInt16(Mt0corr->Text);
+	correctionmotor[1] = Convert::ToInt16(Mt1corr->Text);
+}
+
 
 commands::commands(System::String^ Port, System::Int32 Baud)
 {
@@ -48,6 +54,7 @@ commands::~commands()
 }
 
 Void commands::commands_Load(System::Object^  sender, System::EventArgs^  e) {
+	correctionmotor = new int[2];
 	SDLWin = new SDLWindow;
 	if (!SDLWin->Start()) MessageBox::Show("SDLStart ERROR!");
 	SerialTimer->Enabled = true;
@@ -178,7 +185,7 @@ System::Void serial_app::commands::RefreshJoys_Click(System::Object ^ sender, Sy
 }
 
 int commands::JoyToHB(int axis) {
-	return (int)SDLWin->JoystickGetAxis(axis) / 128.3;
+	return (int)(SDLWin->JoystickGetAxis(axis) / 128.3);
 }
 
 void commands::JoystickWatch()
@@ -209,7 +216,7 @@ bool commands::SetMotor(int motor, int speed) {
 	else {
 		speed = 0;
 	}
-		String^ msg = "s" + motor + "." + abs(speed) + "." + dir + ".";
+		String^ msg = "s" + motor + "." + (int) abs(speed - (speed*(correctionmotor[motor]/100))) + "." + dir + ".";
 		//MessageBox::Show(msg);
 		Bufferlbl->Text = msg;
 		if (SendSerial(msg)) return true;

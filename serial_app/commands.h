@@ -30,6 +30,7 @@ namespace serial_app {
 		///<summary>
 		///user created variables.
 		///</summary>
+	private: int *correctionmotor;
 	private: bool serialbusy = false;
 	private: bool Directionalcontroll = false;
 	private: String^ tmpstr;
@@ -79,6 +80,27 @@ namespace serial_app {
 	private: System::Windows::Forms::Label^  Ax0Val;
 	private: System::Windows::Forms::Label^  Ax0Lbl;
 	private: System::Windows::Forms::Button^  DisconnJoy;
+	private: System::Windows::Forms::GroupBox^  groupBox1;
+	private: System::Windows::Forms::NumericUpDown^  Mt0corr;
+
+
+
+
+
+
+	private: System::Windows::Forms::Label^  label10;
+	private: System::Windows::Forms::Label^  label9;
+	private: System::Windows::Forms::NumericUpDown^  Mt1corr;
+
+
+
+
+
+
+
+
+
+
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -137,10 +159,18 @@ namespace serial_app {
 			this->Ax2lbl = (gcnew System::Windows::Forms::Label());
 			this->Ax0Val = (gcnew System::Windows::Forms::Label());
 			this->Ax0Lbl = (gcnew System::Windows::Forms::Label());
+			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->Mt1corr = (gcnew System::Windows::Forms::NumericUpDown());
+			this->Mt0corr = (gcnew System::Windows::Forms::NumericUpDown());
+			this->label10 = (gcnew System::Windows::Forms::Label());
+			this->label9 = (gcnew System::Windows::Forms::Label());
 			this->CommandsBox->SuspendLayout();
 			this->SerialTimerBox->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TimerMilis))->BeginInit();
 			this->JoystickBox->SuspendLayout();
+			this->groupBox1->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Mt1corr))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Mt0corr))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// serial
@@ -399,7 +429,7 @@ namespace serial_app {
 			this->JoystickBox->Controls->Add(this->ConnJoy);
 			this->JoystickBox->Location = System::Drawing::Point(522, 14);
 			this->JoystickBox->Name = L"JoystickBox";
-			this->JoystickBox->Size = System::Drawing::Size(213, 229);
+			this->JoystickBox->Size = System::Drawing::Size(215, 229);
 			this->JoystickBox->TabIndex = 12;
 			this->JoystickBox->TabStop = false;
 			this->JoystickBox->Text = L"Joystick";
@@ -516,11 +546,59 @@ namespace serial_app {
 			this->Ax0Lbl->TabIndex = 12;
 			this->Ax0Lbl->Text = L"axis0:";
 			// 
+			// groupBox1
+			// 
+			this->groupBox1->Controls->Add(this->Mt1corr);
+			this->groupBox1->Controls->Add(this->Mt0corr);
+			this->groupBox1->Controls->Add(this->label10);
+			this->groupBox1->Controls->Add(this->label9);
+			this->groupBox1->Location = System::Drawing::Point(743, 14);
+			this->groupBox1->Name = L"groupBox1";
+			this->groupBox1->Size = System::Drawing::Size(112, 229);
+			this->groupBox1->TabIndex = 13;
+			this->groupBox1->TabStop = false;
+			this->groupBox1->Text = L"Correction (-%)";
+			// 
+			// Mt1corr
+			// 
+			this->Mt1corr->Location = System::Drawing::Point(55, 61);
+			this->Mt1corr->Name = L"Mt1corr";
+			this->Mt1corr->Size = System::Drawing::Size(52, 20);
+			this->Mt1corr->TabIndex = 1;
+			this->Mt1corr->ValueChanged += gcnew System::EventHandler(this, &commands::CorrectionChanged);
+			// 
+			// Mt0corr
+			// 
+			this->Mt0corr->Location = System::Drawing::Point(54, 26);
+			this->Mt0corr->Name = L"Mt0corr";
+			this->Mt0corr->Size = System::Drawing::Size(52, 20);
+			this->Mt0corr->TabIndex = 1;
+			this->Mt0corr->ValueChanged += gcnew System::EventHandler(this, &commands::CorrectionChanged);
+			// 
+			// label10
+			// 
+			this->label10->AutoSize = true;
+			this->label10->Location = System::Drawing::Point(6, 63);
+			this->label10->Name = L"label10";
+			this->label10->Size = System::Drawing::Size(43, 13);
+			this->label10->TabIndex = 0;
+			this->label10->Text = L"Motor1:";
+			// 
+			// label9
+			// 
+			this->label9->AutoSize = true;
+			this->label9->Location = System::Drawing::Point(6, 28);
+			this->label9->Name = L"label9";
+			this->label9->Size = System::Drawing::Size(43, 13);
+			this->label9->TabIndex = 0;
+			this->label9->Text = L"Motor0:";
+			// 
 			// commands
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(743, 275);
+			this->ClientSize = System::Drawing::Size(865, 275);
+			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->JoystickBox);
 			this->Controls->Add(this->SerialTimerBox);
 			this->Controls->Add(this->Historico);
@@ -531,7 +609,7 @@ namespace serial_app {
 			this->Controls->Add(this->DirEn);
 			this->Name = L"commands";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-			this->Text = L"SerialCommunication";
+			this->Text = L".";
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &commands::commands_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &commands::commands_Load);
 			this->CommandsBox->ResumeLayout(false);
@@ -541,6 +619,10 @@ namespace serial_app {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TimerMilis))->EndInit();
 			this->JoystickBox->ResumeLayout(false);
 			this->JoystickBox->PerformLayout();
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Mt1corr))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Mt0corr))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -581,5 +663,6 @@ namespace serial_app {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private: bool SendSerial(String^); //master
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private: System::Void CorrectionChanged(System::Object^  sender, System::EventArgs^  e);
 };
 }
