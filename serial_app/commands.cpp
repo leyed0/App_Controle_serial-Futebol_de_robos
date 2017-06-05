@@ -6,12 +6,12 @@
 
 using namespace serial_app;
 
-System::Void serial_app::commands::DisconnJoy_Click(System::Object ^ sender, System::EventArgs ^ e)
+System::Void commands::DisconnJoy_Click(System::Object ^ sender, System::EventArgs ^ e)
 {
 	SDLWin->JoystickDisconnect();
 }
 
-bool serial_app::commands::SendSerial(String^ str)
+bool commands::SendSerial(String^ str)
 {
 	if (!serialbusy) {
 		serialbusy = true;
@@ -24,8 +24,11 @@ bool serial_app::commands::SendSerial(String^ str)
 
 System::Void serial_app::commands::CorrectionChanged(System::Object ^ sender, System::EventArgs ^ e)
 {
-	correctionmotor[0] = Convert::ToInt16(Mt0corr->Text);
-	correctionmotor[1] = Convert::ToInt16(Mt1corr->Text);
+	correctionmotor[0][0] = (int) Mt0R1corr->Value;
+	correctionmotor[0][1] = (int) Mt1R1corr->Value;
+	correctionmotor[1][0] = (int)Mt0R2corr->Value;
+	correctionmotor[1][1] = (int)Mt1R2corr->Value;
+	Bufferlbl->Text = Convert::ToString(correctionmotor[0]);
 }
 
 
@@ -34,7 +37,9 @@ commands::commands(System::String^ Port, System::Int32 Baud)
 	InitializeComponent();
 	serial = gcnew SerialPort(Port, Baud);
 	serial->ReadTimeout = 50;
-	LastAxVal = new int[6];
+	LastAxVal = new int*[2];
+	LastAxVal[0] = new int[6];
+	LastAxVal[1] = new int[6];
 	try
 	{
 		serial->Open();
@@ -43,6 +48,8 @@ commands::commands(System::String^ Port, System::Int32 Baud)
 	{
 		throw e;
 	}
+	
+	this->Text = Port->ToUpper() + " - Serial commands - CWBOTS";
 }
 
 commands::~commands()
@@ -54,7 +61,13 @@ commands::~commands()
 }
 
 Void commands::commands_Load(System::Object^  sender, System::EventArgs^  e) {
-	correctionmotor = new int[2];
+	
+	//alocando matriz
+	correctionmotor = new int*[2];
+	correctionmotor[0] = new int[2];
+	correctionmotor[1] = new int[2];
+	//matriz alocada
+	correctionmotor[0][0] = correctionmotor[0][1] = correctionmotor[1][0] = correctionmotor[1][1] = 0;
 	SDLWin = new SDLWindow;
 	if (!SDLWin->Start()) MessageBox::Show("SDLStart ERROR!");
 	SerialTimer->Enabled = true;
@@ -62,9 +75,9 @@ Void commands::commands_Load(System::Object^  sender, System::EventArgs^  e) {
 }
 
 void commands::listJoys() {
-	JoyLst->Items->Clear();
+	Joy1Lst->Items->Clear();
 	for (int i = 1; i <= SDLWin->JoystickCount(); i++) {
-		JoyLst->Items->Add(i);
+		Joy1Lst->Items->Add(i);
 	}
 }
 
@@ -106,9 +119,12 @@ Void commands::Console_KeyDown(System::Object^  sender, System::Windows::Forms::
 		}
 		if (Write != "")
 		{
-			serial->Write(Write);
-			serialbusy = true;
-			Historico->Text += "W - " + Write + "\n";
+			if (Write[0] == 's') {
+				serialbusy = true;
+				serial->Write(Write);
+				serialbusy = false;
+				Historico->Text += "W - " + Write + "\n";
+			}
 		}
 		else
 		{
@@ -173,7 +189,7 @@ Void commands::SerialTimer_Tick(System::Object^  sender, System::EventArgs^  e) 
 }
 
 Void commands::ConnJoys_Click(System::Object^  sender, System::EventArgs^  e) {
-	if (SDLWin->JoystickConnect(Convert::ToInt16(JoyLst->Text)-1)) MessageBox::Show("sucesso!");
+	if (SDLWin->JoystickConnect(Convert::ToInt16(Joy1Lst->Text)-1)) MessageBox::Show("sucesso!");
 	else MessageBox::Show("Erro!");
 	SDLWin->Start();
 	
@@ -184,31 +200,44 @@ System::Void serial_app::commands::RefreshJoys_Click(System::Object ^ sender, Sy
 	listJoys();
 }
 
-int commands::JoyToHB(int axis) {
-	return (int)(SDLWin->JoystickGetAxis(axis) / 128.3);
+int commands::JoyToHB(int joy, int axis) {
+	return (int)(SDLWin->JoystickGetAxis(joy, axis) / 128.3);
 }
 
 void commands::JoystickWatch()
 {
 	if (!serialbusy) {
 		//Bufferlbl->Text = Convert::ToString(JoyToHB(0));
-		Ax0Val->Text = Convert::ToString(JoyToHB(0));
-		Ax1Val->Text = Convert::ToString(JoyToHB(1));
-		Ax2Val->Text = Convert::ToString(JoyToHB(2));
-		Ax3Val->Text = Convert::ToString(JoyToHB(3));
-		Ax4Val->Text = Convert::ToString(JoyToHB(4));
-		Ax5Val->Text = Convert::ToString(JoyToHB(5));
-
-		if (JoyToHB(1) != LastAxVal[1]) {
-			if(SetMotor(1, -LastAxVal[1])) LastAxVal[1] = JoyToHB(1);
+		J1Ax0Val->Text = Convert::ToString(JoyToHB(0,0));
+		J1Ax1Val->Text = Convert::ToString(JoyToHB(0,1));
+		J1Ax2Val->Text = Convert::ToString(JoyToHB(0,2));
+		J1Ax3Val->Text = Convert::ToString(JoyToHB(0,3));
+		J1Ax4Val->Text = Convert::ToString(JoyToHB(0,4));
+		J1Ax5Val->Text = Convert::ToString(JoyToHB(0,5));
+		if (JoyToHB(0,1) != LastAxVal[0][1]) {
+			if(SetMotor(0,1, -LastAxVal[0][1])) LastAxVal[0][1] = JoyToHB(0,1);
 		}
-		if (JoyToHB(4) != LastAxVal[4]) {
-			if(SetMotor(2, -LastAxVal[4])) LastAxVal[4] = JoyToHB(4);
+		if (JoyToHB(0,4) != LastAxVal[0][4]) {
+			if(SetMotor(0,2, -LastAxVal[0][4])) LastAxVal[0][4] = JoyToHB(0,4);
+		}
+
+
+		J2Ax0Val->Text = Convert::ToString(JoyToHB(1,0));
+		J2Ax1Val->Text = Convert::ToString(JoyToHB(1,1));
+		J2Ax2Val->Text = Convert::ToString(JoyToHB(1,2));
+		J2Ax3Val->Text = Convert::ToString(JoyToHB(1,3));
+		J2Ax4Val->Text = Convert::ToString(JoyToHB(1,4));
+		J2Ax5Val->Text = Convert::ToString(JoyToHB(1,5));
+		if (JoyToHB(1,1) != LastAxVal[1][1]) {
+			if(SetMotor(1,1, -LastAxVal[1][1])) LastAxVal[1][1] = JoyToHB(1,1);
+		}
+		if (JoyToHB(1,4) != LastAxVal[1][4]) {
+			if(SetMotor(1,2, -LastAxVal[1][4])) LastAxVal[1][4] = JoyToHB(1,4);
 		}
 	}
 }
 
-bool commands::SetMotor(int motor, int speed) {
+bool commands::SetMotor(int robot, int motor, int speed) {
 	int dir = 0;
 	if (abs(speed) >= 20) {
 		if (speed >= 0) dir = 1;
@@ -216,7 +245,9 @@ bool commands::SetMotor(int motor, int speed) {
 	else {
 		speed = 0;
 	}
-		String^ msg = "s" + motor + "." + (int) abs(speed - (speed*(correctionmotor[motor]/100))) + "." + dir + ".";
+	if (correctionmotor[motor-1] != 0) speed -= (speed*((float)correctionmotor[0][motor-1] / 100));
+		//String^ msg = "s" +robot+ motor + "." + abs(speed) + "." + dir + ".";
+		String^ msg = "s" + motor + "." + abs(speed) + "." + dir + ".";
 		//MessageBox::Show(msg);
 		Bufferlbl->Text = msg;
 		if (SendSerial(msg)) return true;

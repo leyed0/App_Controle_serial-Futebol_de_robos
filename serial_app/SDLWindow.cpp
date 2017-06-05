@@ -8,7 +8,8 @@ SDLWindow::SDLWindow()
 
 SDLWindow::~SDLWindow()
 {
-	JoystickDisconnect();
+	JoystickDisconnect(0);
+	JoystickDisconnect(1);
 	SDL_Quit();
 	//throw gcnew System::NotImplementedException();
 }
@@ -24,7 +25,7 @@ void SDLWindow::MainLoop() {
 	if (SDL_PollEvent(&Event) != 0) {
 		if (Event.type.Equals(SDL_JOYAXISMOTION)) {
 			if (Event.jaxis.axis == 0) {
-				SDL_HapticRumblePlay(JoystickFeedback, (float) abs(SDL_JoystickGetAxis(Joystick, 0)) / 32767 , 0);
+				SDL_HapticRumblePlay(JoystickFeedback[0], (float) abs(SDL_JoystickGetAxis(Joystick[0], 0)) / 32767 , 0);
 				//SDL_HapticRumblePlay(JoystickFeedback, 0.75, 500);
 			}
 		}
@@ -44,35 +45,36 @@ int SDLWindow::JoystickCount()
 	return (int)SDL_NumJoysticks();
 }
 
-int SDLWindow::JoystickGetAxis(int axis)
+int SDLWindow::JoystickGetAxis(int id, int axis)
 {
-	return SDL_JoystickGetAxis(Joystick, axis);
+	return SDL_JoystickGetAxis(Joystick[id], axis);
 }
 
-bool SDLWindow::JoystickConnect(int index)
+bool SDLWindow::JoystickConnect(int id, int index)
 {
-	JoystickConnected = true;
-	Joystick = SDL_JoystickOpen(index);
-	JoystickFeedback = SDL_HapticOpenFromJoystick(Joystick);
-	if(Joystick == NULL || JoystickFeedback == NULL) return false;
-	if (SDL_HapticRumbleInit(JoystickFeedback)<0) return false;
+	Joystick[id] = SDL_JoystickOpen(index);
+	JoystickFeedback[id] = SDL_HapticOpenFromJoystick(Joystick[id]);
+	if(Joystick[id] == NULL || JoystickFeedback == NULL) return false;
+	if (SDL_HapticRumbleInit(JoystickFeedback[id])<0) return false;
+	JoystickConnected[id] = true;
 	return true;
 }
 
-void SDLWindow::JoystickDisconnect() {
-	SDL_HapticClose(JoystickFeedback);
-	SDL_JoystickClose(Joystick);
-	Joystick = NULL;
-	JoystickFeedback = NULL;
+void SDLWindow::JoystickDisconnect(int id) {
+	SDL_HapticClose(JoystickFeedback[id]);
+	SDL_JoystickClose(Joystick[id]);
+	Joystick[id] = NULL;
+	JoystickFeedback[id] = NULL;
+	JoystickConnected[id] = false;
 }
 
-unsigned int SDLWindow::Joystick_255(int axis)
+unsigned int SDLWindow::Joystick_255(int id, int axis)
 {
 	unsigned int ret;
-	if(ret = SDL_JoystickGetAxis(Joystick, axis) - Deadzone[axis]<=0) return 0;
-	else return (int)ret / 128.3;
+	if(ret = SDL_JoystickGetAxis(Joystick[id], axis) - Deadzone[axis]<=0) return 0;
+	else return ret / 128.3;
 }
 
-void SDLWindow::JoystickSetDZ(int axis, int val) {
+void SDLWindow::JoystickSetDZ(int id,int axis, int val) {
 	Deadzone[axis] = (int)val * 128.4980392156863;
 }
