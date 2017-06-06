@@ -8,7 +8,7 @@ using namespace serial_app;
 
 System::Void commands::DisconnJoy_Click(System::Object ^ sender, System::EventArgs ^ e)
 {
-	SDLWin->JoystickDisconnect();
+	SDLWin->JoystickDisconnect(0);
 }
 
 bool commands::SendSerial(String^ str)
@@ -189,7 +189,7 @@ Void commands::SerialTimer_Tick(System::Object^  sender, System::EventArgs^  e) 
 }
 
 Void commands::ConnJoys_Click(System::Object^  sender, System::EventArgs^  e) {
-	if (SDLWin->JoystickConnect(Convert::ToInt16(Joy1Lst->Text)-1)) MessageBox::Show("sucesso!");
+	if (SDLWin->JoystickConnect(1,Convert::ToInt16(Joy1Lst->Text)-1)) MessageBox::Show("sucesso!");
 	else MessageBox::Show("Erro!");
 	SDLWin->Start();
 	
