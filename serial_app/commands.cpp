@@ -219,13 +219,6 @@ void commands::JoystickWatch()
 				LastAxVal[0][3] = JoyToHB(0, 3);
 			}
 
-		/*if (JoyToHB(0,1) != LastAxVal[0][1]) {
-			if(SetMotor(0,1, -LastAxVal[0][1])) LastAxVal[0][1] = JoyToHB(0,1);
-		}
-		if (JoyToHB(0,4) != LastAxVal[0][4]) {
-			if(SetMotor(0,2, -LastAxVal[0][4])) LastAxVal[0][4] = JoyToHB(0,4);
-		}*/
-
 
 		J2Ax0Val->Text = Convert::ToString(JoyToHB(1,0));
 		J2Ax1Val->Text = Convert::ToString(JoyToHB(1,1));
@@ -233,12 +226,18 @@ void commands::JoystickWatch()
 		J2Ax3Val->Text = Convert::ToString(JoyToHB(1,3));
 		J2Ax4Val->Text = Convert::ToString(JoyToHB(1,4));
 		J2Ax5Val->Text = Convert::ToString(JoyToHB(1,5));
-		if (JoyToHB(1,1) != LastAxVal[1][1]) {
+		if (JoyToHB(1, 1) != LastAxVal[1][1] || JoyToHB(1, 3) != LastAxVal[1][3])
+			if (SetMotors(1, JoyToHB(1, 1), JoyToHB(1, 3))) {
+				LastAxVal[1][1] = JoyToHB(1, 1);
+				LastAxVal[1][3] = JoyToHB(1, 3);
+			}
+
+		/*if (JoyToHB(1,1) != LastAxVal[1][1]) {
 			if(SetMotor(1,1, -LastAxVal[1][1])) LastAxVal[1][1] = JoyToHB(1,1);
 		}
 		if (JoyToHB(1,4) != LastAxVal[1][4]) {
 			if(SetMotor(1,2, -LastAxVal[1][4])) LastAxVal[1][4] = JoyToHB(1,4);
-		}
+		}*/
 	}
 }
 
