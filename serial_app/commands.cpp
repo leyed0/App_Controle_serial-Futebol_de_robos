@@ -19,16 +19,15 @@ bool commands::SendSerial(String^ str)
 		serialbusy = false;
 		return true;
 	}
-	else return false;
+	return false;
 }
 
 System::Void serial_app::commands::CorrectionChanged(System::Object ^ sender, System::EventArgs ^ e)
 {
 	correctionmotor[0][0] = (int) Mt0R1corr->Value;
 	correctionmotor[0][1] = (int) Mt1R1corr->Value;
-	correctionmotor[1][0] = (int)Mt0R2corr->Value;
-	correctionmotor[1][1] = (int)Mt1R2corr->Value;
-	Bufferlbl->Text = Convert::ToString(correctionmotor[0]);
+	correctionmotor[1][0] = (int) Mt0R2corr->Value;
+	correctionmotor[1][1] = (int) Mt1R2corr->Value;
 }
 
 
@@ -214,12 +213,18 @@ void commands::JoystickWatch()
 		J1Ax3Val->Text = Convert::ToString(JoyToHB(0,3));
 		J1Ax4Val->Text = Convert::ToString(JoyToHB(0,4));
 		J1Ax5Val->Text = Convert::ToString(JoyToHB(0,5));
-		if (JoyToHB(0,1) != LastAxVal[0][1]) {
+		if(JoyToHB(0,1) != LastAxVal[0][1] || JoyToHB(0, 3) != LastAxVal[0][3]) 
+			if (SetMotors(0, JoyToHB(0, 1), JoyToHB(0, 3))) {
+				LastAxVal[0][1] = JoyToHB(0, 1);
+				LastAxVal[0][3] = JoyToHB(0, 3);
+			}
+
+		/*if (JoyToHB(0,1) != LastAxVal[0][1]) {
 			if(SetMotor(0,1, -LastAxVal[0][1])) LastAxVal[0][1] = JoyToHB(0,1);
 		}
 		if (JoyToHB(0,4) != LastAxVal[0][4]) {
 			if(SetMotor(0,2, -LastAxVal[0][4])) LastAxVal[0][4] = JoyToHB(0,4);
-		}
+		}*/
 
 
 		J2Ax0Val->Text = Convert::ToString(JoyToHB(1,0));
@@ -251,5 +256,28 @@ bool commands::SetMotor(int robot, int motor, int speed) {
 		//MessageBox::Show(msg);
 		Bufferlbl->Text = msg;
 		if (SendSerial(msg)) return true;
-		else return false;
+		return false;
+}
+
+bool commands::SetMotors(int robot, int v1, int v2) {
+	int dir[2] = { 0,0 };
+	int speed[2] = { v1, v1 };
+
+	//define speed in sterring
+	if (v2 < 0) speed[0] +=v2*0.3;
+	else if (v2 > 0) speed[1] -=v2*0.3;
+
+	//define positive direction
+	if (speed[0] >= 0) dir[0] = 1;
+	if (speed[1] >= 0) dir[1] = 1;
+	
+	//applying correction factors
+	if (correctionmotor[robot][0] != 0) speed[0] -= (speed[0]*((float)correctionmotor[robot][0] / 100));
+	if (correctionmotor[robot][1] != 0) speed[1] -= (speed[1] * ((float)correctionmotor[robot][1] / 100));
+	String^ msg = "s" + robot + '.0.' + speed[0] + '.' + dir[0]+'.'+ "s" + robot + '.1.' + speed[0] + '.' + dir[0] + '.';
+	Bufferlbl->Text = msg;
+	if (SendSerial(msg)) return true;
+	return false;
+
+
 }

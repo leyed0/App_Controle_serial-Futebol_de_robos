@@ -76,5 +76,5 @@ unsigned int SDLWindow::Joystick_255(int id, int axis)
 }
 
 void SDLWindow::JoystickSetDZ(int id,int axis, int val) {
-	Deadzone[0][axis] = (int)val * 128.4980392156863;
+	Deadzone[id][axis] = (int)val * 128.4980392156863;
 }

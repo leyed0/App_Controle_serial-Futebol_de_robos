@@ -91,4 +91,9 @@
       <Filter>Release\x32</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Xinput Map.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

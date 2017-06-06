@@ -198,6 +198,9 @@
     <None Include="..\x64\Release\serial_app.exe.metagen" />
     <None Include="..\x64\Release\serial_app.pdb" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Xinput Map.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\ImageContentTask.targets" />
