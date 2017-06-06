@@ -1,0 +1,3 @@
+05/06/17 - Added Second Joystick support and RC car like controll - Minur bugs to be fixed - not tested yet
+05/06/17 - Added a Guide image to the xinput Axes
+06/06/14 - Some obvious bugs being fixed - Yet not tested

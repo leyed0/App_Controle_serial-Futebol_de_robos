@@ -263,8 +263,8 @@ bool commands::SetMotors(int robot, int v1, int v2) {
 	int speed[2] = { v1, v1 };
 
 	//define speed in sterring
-	if (v2 < 0) speed[0] +=v2*0.3;
-	else if (v2 > 0) speed[1] -=v2*0.3;
+	if (v2 < 0 && speed[0] >= 0 || v2 >= 0 && speed[0] < 0) speed[0] += v2*0.3;
+	else speed[1] -=v2*0.3;
 
 	//define positive direction
 	if (speed[0] >= 0) dir[0] = 1;
@@ -273,10 +273,10 @@ bool commands::SetMotors(int robot, int v1, int v2) {
 	//applying correction factors
 	if (correctionmotor[robot][0] != 0) speed[0] -= (speed[0]*((float)correctionmotor[robot][0] / 100));
 	if (correctionmotor[robot][1] != 0) speed[1] -= (speed[1] * ((float)correctionmotor[robot][1] / 100));
-	String^ msg = "s" + robot + '.0.' + speed[0] + '.' + dir[0]+'.'+ "s" + robot + '.1.' + speed[0] + '.' + dir[0] + '.';
+
+	//modulate the data to be sent
+	String^ msg = "s" + robot + '.0.' + abs(speed[0]) + '.' + dir[0]+'.'+ "s" + robot + '.1.' + abs(speed[0]) + '.' + dir[0] + '.';
 	Bufferlbl->Text = msg;
 	if (SendSerial(msg)) return true;
 	return false;
-
-
 }
