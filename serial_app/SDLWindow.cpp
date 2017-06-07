@@ -78,3 +78,8 @@ unsigned int SDLWindow::Joystick_255(int id, int axis)
 void SDLWindow::JoystickSetDZ(int id,int axis, int val) {
 	Deadzone[id][axis] = (int)val * 128.4980392156863;
 }
+
+bool SDLWindow::IsJoyConnected(int i)
+{
+	return JoystickConnected[i];
+}

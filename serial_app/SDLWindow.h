@@ -20,4 +20,5 @@ public:
 	void JoystickDisconnect(int);
 	unsigned int Joystick_255(int, int);
 	void JoystickSetDZ(int, int, int);
+	bool IsJoyConnected(int);
 };

@@ -62,42 +62,31 @@ namespace serial_app {
 	private: System::Windows::Forms::TextBox^  Console;
 	private: System::Windows::Forms::Timer^  SerialTimer;
 	private: System::Windows::Forms::Label^  Bufferlbl;
-	private: System::Windows::Forms::ComboBox^  Joy1Lst;
+	private: System::Windows::Forms::ComboBox^  J0Lst;
 
-	private: System::Windows::Forms::Label^  label8;
-	private: System::Windows::Forms::Button^  ConnJoy1;
-	private: System::Windows::Forms::Button^  RefreshJoys1;
+	private: System::Windows::Forms::Button^  J0Conn;
+	private: System::Windows::Forms::Button^  J0Disconn;
+	private: System::Windows::Forms::Label^  J0A1Lbl;
+	private: System::Windows::Forms::Label^  J0A3Lbl;
+	private: System::Windows::Forms::Label^  label9;
+	private: System::Windows::Forms::NumericUpDown^  R0M0Corr;
+	private: System::Windows::Forms::NumericUpDown^  R0M1Corr;
+	private: System::Windows::Forms::Label^  J0A1Val;
+	private: System::Windows::Forms::Label^  J0A3Val;
+	private: System::Windows::Forms::GroupBox^  Joystick0box;
+	private: System::Windows::Forms::ComboBox^  J1Lst;
 
-
-	private: System::Windows::Forms::GroupBox^  Joystick1Box;
-	private: System::Windows::Forms::Label^  J1Ax5Val;
-
-
-	private: System::Windows::Forms::Label^  J1Ax5lbl;
-	private: System::Windows::Forms::Label^  J1Ax3Val;
-
-
-	private: System::Windows::Forms::Label^  J1Ax3lbl;
-	private: System::Windows::Forms::Label^  J1Ax1Val;
-
-
-	private: System::Windows::Forms::Label^  J1Ax1lbl;
-	private: System::Windows::Forms::Label^  J1Ax4Val;
-
-
-	private: System::Windows::Forms::Label^  J1Ax4lbl;
-	private: System::Windows::Forms::Label^  J1Ax2Val;
-
-
-	private: System::Windows::Forms::Label^  J1Ax2lbl;
-	private: System::Windows::Forms::Label^  J1Ax0Val;
-
-
-	private: System::Windows::Forms::Label^  J1Ax0Lbl;
-
-	private: System::Windows::Forms::Button^  DisconnJoy1;
-	private: System::Windows::Forms::NumericUpDown^  Mt0R1corr;
-	private: System::Windows::Forms::NumericUpDown^  Mt1R1corr;
+	private: System::Windows::Forms::Button^  J1Conn;
+	private: System::Windows::Forms::Button^  J1Disconn;
+	private: System::Windows::Forms::Label^  J1A1Lbl;
+	private: System::Windows::Forms::Label^  J1A3Lbl;
+	private: System::Windows::Forms::Label^  label11;
+	private: System::Windows::Forms::NumericUpDown^  R1M0Corr;
+	private: System::Windows::Forms::NumericUpDown^  R1M1Corr;
+	private: System::Windows::Forms::Label^  J1A1Val;
+	private: System::Windows::Forms::Label^  J1A3Val;
+	private: System::Windows::Forms::GroupBox^  Joystick1box;
+	private: System::Windows::Forms::Button^  button1;
 
 
 
@@ -110,44 +99,140 @@ namespace serial_app {
 
 
 
-	private: System::Windows::Forms::GroupBox^  Joystick2Box;
-	private: System::Windows::Forms::NumericUpDown^  Mt1R2corr;
-
-
-	private: System::Windows::Forms::Button^  DisconnJoy2;
-	private: System::Windows::Forms::NumericUpDown^  Mt0R2corr;
-	private: System::Windows::Forms::Label^  J2Ax5Val;
 
 
 
-	private: System::Windows::Forms::Label^  J2Ax5Lbl;
-private: System::Windows::Forms::Label^  J2Ax3Val;
 
 
-	private: System::Windows::Forms::Label^  J2Ax3Lbl;
-private: System::Windows::Forms::Label^  J2Ax1Val;
 
 
-private: System::Windows::Forms::Label^  J2Ax1Lbl;
-private: System::Windows::Forms::Label^  J2Ax4Val;
 
 
-private: System::Windows::Forms::Label^  J2Ax4Lbl;
-private: System::Windows::Forms::Label^  J2Ax2Val;
 
 
-private: System::Windows::Forms::Label^  J2Ax2Lbl;
-private: System::Windows::Forms::Label^  J2Ax0Val;
 
 
-private: System::Windows::Forms::Label^  J2Ax0Lbl;
 
 
-	private: System::Windows::Forms::Label^  label21;
 
-	private: System::Windows::Forms::ComboBox^  Joy2Lst;
-	private: System::Windows::Forms::Button^  ConnJoy2;
-private: System::Windows::Forms::Button^  RefreshJoys2;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -201,55 +286,38 @@ private: System::Windows::Forms::Button^  RefreshJoys2;
 			this->Console = (gcnew System::Windows::Forms::TextBox());
 			this->SerialTimer = (gcnew System::Windows::Forms::Timer(this->components));
 			this->Bufferlbl = (gcnew System::Windows::Forms::Label());
-			this->Joy1Lst = (gcnew System::Windows::Forms::ComboBox());
-			this->label8 = (gcnew System::Windows::Forms::Label());
-			this->ConnJoy1 = (gcnew System::Windows::Forms::Button());
-			this->RefreshJoys1 = (gcnew System::Windows::Forms::Button());
-			this->Joystick1Box = (gcnew System::Windows::Forms::GroupBox());
-			this->Mt1R1corr = (gcnew System::Windows::Forms::NumericUpDown());
-			this->DisconnJoy1 = (gcnew System::Windows::Forms::Button());
-			this->Mt0R1corr = (gcnew System::Windows::Forms::NumericUpDown());
-			this->J1Ax5Val = (gcnew System::Windows::Forms::Label());
-			this->J1Ax5lbl = (gcnew System::Windows::Forms::Label());
-			this->J1Ax3Val = (gcnew System::Windows::Forms::Label());
-			this->J1Ax3lbl = (gcnew System::Windows::Forms::Label());
-			this->J1Ax1Val = (gcnew System::Windows::Forms::Label());
-			this->J1Ax1lbl = (gcnew System::Windows::Forms::Label());
-			this->J1Ax4Val = (gcnew System::Windows::Forms::Label());
-			this->J1Ax4lbl = (gcnew System::Windows::Forms::Label());
-			this->J1Ax2Val = (gcnew System::Windows::Forms::Label());
-			this->J1Ax2lbl = (gcnew System::Windows::Forms::Label());
-			this->J1Ax0Val = (gcnew System::Windows::Forms::Label());
-			this->J1Ax0Lbl = (gcnew System::Windows::Forms::Label());
-			this->Joystick2Box = (gcnew System::Windows::Forms::GroupBox());
-			this->Mt1R2corr = (gcnew System::Windows::Forms::NumericUpDown());
-			this->DisconnJoy2 = (gcnew System::Windows::Forms::Button());
-			this->Mt0R2corr = (gcnew System::Windows::Forms::NumericUpDown());
-			this->J2Ax5Val = (gcnew System::Windows::Forms::Label());
-			this->J2Ax5Lbl = (gcnew System::Windows::Forms::Label());
-			this->J2Ax3Val = (gcnew System::Windows::Forms::Label());
-			this->J2Ax3Lbl = (gcnew System::Windows::Forms::Label());
-			this->J2Ax1Val = (gcnew System::Windows::Forms::Label());
-			this->J2Ax1Lbl = (gcnew System::Windows::Forms::Label());
-			this->J2Ax4Val = (gcnew System::Windows::Forms::Label());
-			this->J2Ax4Lbl = (gcnew System::Windows::Forms::Label());
-			this->J2Ax2Val = (gcnew System::Windows::Forms::Label());
-			this->J2Ax2Lbl = (gcnew System::Windows::Forms::Label());
-			this->J2Ax0Val = (gcnew System::Windows::Forms::Label());
-			this->J2Ax0Lbl = (gcnew System::Windows::Forms::Label());
-			this->label21 = (gcnew System::Windows::Forms::Label());
-			this->RefreshJoys2 = (gcnew System::Windows::Forms::Button());
-			this->Joy2Lst = (gcnew System::Windows::Forms::ComboBox());
-			this->ConnJoy2 = (gcnew System::Windows::Forms::Button());
+			this->J0Lst = (gcnew System::Windows::Forms::ComboBox());
+			this->J0Conn = (gcnew System::Windows::Forms::Button());
+			this->J0Disconn = (gcnew System::Windows::Forms::Button());
+			this->J0A1Lbl = (gcnew System::Windows::Forms::Label());
+			this->J0A3Lbl = (gcnew System::Windows::Forms::Label());
+			this->label9 = (gcnew System::Windows::Forms::Label());
+			this->R0M0Corr = (gcnew System::Windows::Forms::NumericUpDown());
+			this->R0M1Corr = (gcnew System::Windows::Forms::NumericUpDown());
+			this->J0A1Val = (gcnew System::Windows::Forms::Label());
+			this->J0A3Val = (gcnew System::Windows::Forms::Label());
+			this->Joystick0box = (gcnew System::Windows::Forms::GroupBox());
+			this->J1Lst = (gcnew System::Windows::Forms::ComboBox());
+			this->J1Conn = (gcnew System::Windows::Forms::Button());
+			this->J1Disconn = (gcnew System::Windows::Forms::Button());
+			this->J1A1Lbl = (gcnew System::Windows::Forms::Label());
+			this->J1A3Lbl = (gcnew System::Windows::Forms::Label());
+			this->label11 = (gcnew System::Windows::Forms::Label());
+			this->R1M0Corr = (gcnew System::Windows::Forms::NumericUpDown());
+			this->R1M1Corr = (gcnew System::Windows::Forms::NumericUpDown());
+			this->J1A1Val = (gcnew System::Windows::Forms::Label());
+			this->J1A3Val = (gcnew System::Windows::Forms::Label());
+			this->Joystick1box = (gcnew System::Windows::Forms::GroupBox());
+			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->CommandsBox->SuspendLayout();
 			this->SerialTimerBox->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TimerMilis))->BeginInit();
-			this->Joystick1Box->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Mt1R1corr))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Mt0R1corr))->BeginInit();
-			this->Joystick2Box->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Mt1R2corr))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Mt0R2corr))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->R0M0Corr))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->R0M1Corr))->BeginInit();
+			this->Joystick0box->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->R1M0Corr))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->R1M1Corr))->BeginInit();
+			this->Joystick1box->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// serial
@@ -450,400 +518,235 @@ private: System::Windows::Forms::Button^  RefreshJoys2;
 			this->Bufferlbl->TabIndex = 1;
 			this->Bufferlbl->Text = L"Buffer";
 			// 
-			// Joy1Lst
-			// 
-			this->Joy1Lst->FormattingEnabled = true;
-			this->Joy1Lst->Location = System::Drawing::Point(63, 23);
-			this->Joy1Lst->Name = L"Joy1Lst";
-			this->Joy1Lst->Size = System::Drawing::Size(28, 21);
-			this->Joy1Lst->TabIndex = 9;
-			// 
-			// label8
-			// 
-			this->label8->AutoSize = true;
-			this->label8->Location = System::Drawing::Point(6, 26);
-			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(57, 13);
-			this->label8->TabIndex = 10;
-			this->label8->Text = L"Joystick 1:";
-			// 
-			// ConnJoy1
-			// 
-			this->ConnJoy1->Location = System::Drawing::Point(94, 23);
-			this->ConnJoy1->Name = L"ConnJoy1";
-			this->ConnJoy1->Size = System::Drawing::Size(55, 23);
-			this->ConnJoy1->TabIndex = 11;
-			this->ConnJoy1->Text = L"Connect";
-			this->ConnJoy1->UseVisualStyleBackColor = true;
-			this->ConnJoy1->Click += gcnew System::EventHandler(this, &commands::ConnJoys_Click);
-			// 
-			// RefreshJoys1
-			// 
-			this->RefreshJoys1->Location = System::Drawing::Point(155, 24);
-			this->RefreshJoys1->Name = L"RefreshJoys1";
-			this->RefreshJoys1->Size = System::Drawing::Size(49, 23);
-			this->RefreshJoys1->TabIndex = 11;
-			this->RefreshJoys1->Text = L"Reload";
-			this->RefreshJoys1->UseVisualStyleBackColor = true;
-			this->RefreshJoys1->Click += gcnew System::EventHandler(this, &commands::RefreshJoys_Click);
-			// 
-			// Joystick1Box
-			// 
-			this->Joystick1Box->Controls->Add(this->Mt1R1corr);
-			this->Joystick1Box->Controls->Add(this->DisconnJoy1);
-			this->Joystick1Box->Controls->Add(this->Mt0R1corr);
-			this->Joystick1Box->Controls->Add(this->J1Ax5Val);
-			this->Joystick1Box->Controls->Add(this->J1Ax5lbl);
-			this->Joystick1Box->Controls->Add(this->J1Ax3Val);
-			this->Joystick1Box->Controls->Add(this->J1Ax3lbl);
-			this->Joystick1Box->Controls->Add(this->J1Ax1Val);
-			this->Joystick1Box->Controls->Add(this->J1Ax1lbl);
-			this->Joystick1Box->Controls->Add(this->J1Ax4Val);
-			this->Joystick1Box->Controls->Add(this->J1Ax4lbl);
-			this->Joystick1Box->Controls->Add(this->J1Ax2Val);
-			this->Joystick1Box->Controls->Add(this->J1Ax2lbl);
-			this->Joystick1Box->Controls->Add(this->J1Ax0Val);
-			this->Joystick1Box->Controls->Add(this->J1Ax0Lbl);
-			this->Joystick1Box->Controls->Add(this->label8);
-			this->Joystick1Box->Controls->Add(this->RefreshJoys1);
-			this->Joystick1Box->Controls->Add(this->Joy1Lst);
-			this->Joystick1Box->Controls->Add(this->ConnJoy1);
-			this->Joystick1Box->Location = System::Drawing::Point(522, 14);
-			this->Joystick1Box->Name = L"Joystick1Box";
-			this->Joystick1Box->Size = System::Drawing::Size(215, 229);
-			this->Joystick1Box->TabIndex = 12;
-			this->Joystick1Box->TabStop = false;
-			this->Joystick1Box->Text = L"Joystick 1 - Robot 1";
-			// 
-			// Mt1R1corr
-			// 
-			this->Mt1R1corr->Location = System::Drawing::Point(60, 52);
-			this->Mt1R1corr->Name = L"Mt1R1corr";
-			this->Mt1R1corr->Size = System::Drawing::Size(38, 20);
-			this->Mt1R1corr->TabIndex = 1;
-			this->Mt1R1corr->ValueChanged += gcnew System::EventHandler(this, &commands::CorrectionChanged);
-			// 
-			// DisconnJoy1
-			// 
-			this->DisconnJoy1->Location = System::Drawing::Point(119, 52);
-			this->DisconnJoy1->Name = L"DisconnJoy1";
-			this->DisconnJoy1->Size = System::Drawing::Size(75, 23);
-			this->DisconnJoy1->TabIndex = 13;
-			this->DisconnJoy1->Text = L"Disconnect";
-			this->DisconnJoy1->UseVisualStyleBackColor = true;
-			this->DisconnJoy1->Click += gcnew System::EventHandler(this, &commands::DisconnJoy_Click);
-			// 
-			// Mt0R1corr
-			// 
-			this->Mt0R1corr->Location = System::Drawing::Point(6, 52);
-			this->Mt0R1corr->Name = L"Mt0R1corr";
-			this->Mt0R1corr->Size = System::Drawing::Size(38, 20);
-			this->Mt0R1corr->TabIndex = 1;
-			this->Mt0R1corr->ValueChanged += gcnew System::EventHandler(this, &commands::CorrectionChanged);
-			// 
-			// J1Ax5Val
-			// 
-			this->J1Ax5Val->AutoSize = true;
-			this->J1Ax5Val->Location = System::Drawing::Point(60, 205);
-			this->J1Ax5Val->Name = L"J1Ax5Val";
-			this->J1Ax5Val->Size = System::Drawing::Size(0, 13);
-			this->J1Ax5Val->TabIndex = 12;
-			// 
-			// J1Ax5lbl
-			// 
-			this->J1Ax5lbl->AutoSize = true;
-			this->J1Ax5lbl->Location = System::Drawing::Point(20, 205);
-			this->J1Ax5lbl->Name = L"J1Ax5lbl";
-			this->J1Ax5lbl->Size = System::Drawing::Size(34, 13);
-			this->J1Ax5lbl->TabIndex = 12;
-			this->J1Ax5lbl->Text = L"axis5:";
-			// 
-			// J1Ax3Val
-			// 
-			this->J1Ax3Val->AutoSize = true;
-			this->J1Ax3Val->Location = System::Drawing::Point(60, 160);
-			this->J1Ax3Val->Name = L"J1Ax3Val";
-			this->J1Ax3Val->Size = System::Drawing::Size(0, 13);
-			this->J1Ax3Val->TabIndex = 12;
-			// 
-			// J1Ax3lbl
-			// 
-			this->J1Ax3lbl->AutoSize = true;
-			this->J1Ax3lbl->Location = System::Drawing::Point(20, 160);
-			this->J1Ax3lbl->Name = L"J1Ax3lbl";
-			this->J1Ax3lbl->Size = System::Drawing::Size(34, 13);
-			this->J1Ax3lbl->TabIndex = 12;
-			this->J1Ax3lbl->Text = L"axis3:";
-			// 
-			// J1Ax1Val
-			// 
-			this->J1Ax1Val->AutoSize = true;
-			this->J1Ax1Val->Location = System::Drawing::Point(60, 114);
-			this->J1Ax1Val->Name = L"J1Ax1Val";
-			this->J1Ax1Val->Size = System::Drawing::Size(0, 13);
-			this->J1Ax1Val->TabIndex = 12;
-			// 
-			// J1Ax1lbl
-			// 
-			this->J1Ax1lbl->AutoSize = true;
-			this->J1Ax1lbl->Location = System::Drawing::Point(20, 114);
-			this->J1Ax1lbl->Name = L"J1Ax1lbl";
-			this->J1Ax1lbl->Size = System::Drawing::Size(34, 13);
-			this->J1Ax1lbl->TabIndex = 12;
-			this->J1Ax1lbl->Text = L"axis1:";
-			// 
-			// J1Ax4Val
-			// 
-			this->J1Ax4Val->AutoSize = true;
-			this->J1Ax4Val->Location = System::Drawing::Point(60, 182);
-			this->J1Ax4Val->Name = L"J1Ax4Val";
-			this->J1Ax4Val->Size = System::Drawing::Size(0, 13);
-			this->J1Ax4Val->TabIndex = 12;
-			// 
-			// J1Ax4lbl
-			// 
-			this->J1Ax4lbl->AutoSize = true;
-			this->J1Ax4lbl->Location = System::Drawing::Point(20, 182);
-			this->J1Ax4lbl->Name = L"J1Ax4lbl";
-			this->J1Ax4lbl->Size = System::Drawing::Size(34, 13);
-			this->J1Ax4lbl->TabIndex = 12;
-			this->J1Ax4lbl->Text = L"axis4:";
-			// 
-			// J1Ax2Val
-			// 
-			this->J1Ax2Val->AutoSize = true;
-			this->J1Ax2Val->Location = System::Drawing::Point(60, 137);
-			this->J1Ax2Val->Name = L"J1Ax2Val";
-			this->J1Ax2Val->Size = System::Drawing::Size(0, 13);
-			this->J1Ax2Val->TabIndex = 12;
-			// 
-			// J1Ax2lbl
-			// 
-			this->J1Ax2lbl->AutoSize = true;
-			this->J1Ax2lbl->Location = System::Drawing::Point(20, 137);
-			this->J1Ax2lbl->Name = L"J1Ax2lbl";
-			this->J1Ax2lbl->Size = System::Drawing::Size(34, 13);
-			this->J1Ax2lbl->TabIndex = 12;
-			this->J1Ax2lbl->Text = L"axis2:";
-			// 
-			// J1Ax0Val
-			// 
-			this->J1Ax0Val->AutoSize = true;
-			this->J1Ax0Val->Location = System::Drawing::Point(60, 91);
-			this->J1Ax0Val->Name = L"J1Ax0Val";
-			this->J1Ax0Val->Size = System::Drawing::Size(0, 13);
-			this->J1Ax0Val->TabIndex = 12;
-			// 
-			// J1Ax0Lbl
-			// 
-			this->J1Ax0Lbl->AutoSize = true;
-			this->J1Ax0Lbl->Location = System::Drawing::Point(20, 91);
-			this->J1Ax0Lbl->Name = L"J1Ax0Lbl";
-			this->J1Ax0Lbl->Size = System::Drawing::Size(34, 13);
-			this->J1Ax0Lbl->TabIndex = 12;
-			this->J1Ax0Lbl->Text = L"axis0:";
-			// 
-			// Joystick2Box
-			// 
-			this->Joystick2Box->Controls->Add(this->Mt1R2corr);
-			this->Joystick2Box->Controls->Add(this->DisconnJoy2);
-			this->Joystick2Box->Controls->Add(this->Mt0R2corr);
-			this->Joystick2Box->Controls->Add(this->J2Ax5Val);
-			this->Joystick2Box->Controls->Add(this->J2Ax5Lbl);
-			this->Joystick2Box->Controls->Add(this->J2Ax3Val);
-			this->Joystick2Box->Controls->Add(this->J2Ax3Lbl);
-			this->Joystick2Box->Controls->Add(this->J2Ax1Val);
-			this->Joystick2Box->Controls->Add(this->J2Ax1Lbl);
-			this->Joystick2Box->Controls->Add(this->J2Ax4Val);
-			this->Joystick2Box->Controls->Add(this->J2Ax4Lbl);
-			this->Joystick2Box->Controls->Add(this->J2Ax2Val);
-			this->Joystick2Box->Controls->Add(this->J2Ax2Lbl);
-			this->Joystick2Box->Controls->Add(this->J2Ax0Val);
-			this->Joystick2Box->Controls->Add(this->J2Ax0Lbl);
-			this->Joystick2Box->Controls->Add(this->label21);
-			this->Joystick2Box->Controls->Add(this->RefreshJoys2);
-			this->Joystick2Box->Controls->Add(this->Joy2Lst);
-			this->Joystick2Box->Controls->Add(this->ConnJoy2);
-			this->Joystick2Box->Location = System::Drawing::Point(743, 14);
-			this->Joystick2Box->Name = L"Joystick2Box";
-			this->Joystick2Box->Size = System::Drawing::Size(215, 229);
-			this->Joystick2Box->TabIndex = 12;
-			this->Joystick2Box->TabStop = false;
-			this->Joystick2Box->Text = L"Joystick 2 - Robot 2";
-			// 
-			// Mt1R2corr
-			// 
-			this->Mt1R2corr->Location = System::Drawing::Point(60, 52);
-			this->Mt1R2corr->Name = L"Mt1R2corr";
-			this->Mt1R2corr->Size = System::Drawing::Size(38, 20);
-			this->Mt1R2corr->TabIndex = 1;
-			this->Mt1R2corr->ValueChanged += gcnew System::EventHandler(this, &commands::CorrectionChanged);
-			// 
-			// DisconnJoy2
-			// 
-			this->DisconnJoy2->Location = System::Drawing::Point(119, 52);
-			this->DisconnJoy2->Name = L"DisconnJoy2";
-			this->DisconnJoy2->Size = System::Drawing::Size(75, 23);
-			this->DisconnJoy2->TabIndex = 13;
-			this->DisconnJoy2->Text = L"Disconnect";
-			this->DisconnJoy2->UseVisualStyleBackColor = true;
-			this->DisconnJoy2->Click += gcnew System::EventHandler(this, &commands::DisconnJoy_Click);
-			// 
-			// Mt0R2corr
-			// 
-			this->Mt0R2corr->Location = System::Drawing::Point(6, 52);
-			this->Mt0R2corr->Name = L"Mt0R2corr";
-			this->Mt0R2corr->Size = System::Drawing::Size(38, 20);
-			this->Mt0R2corr->TabIndex = 1;
-			this->Mt0R2corr->ValueChanged += gcnew System::EventHandler(this, &commands::CorrectionChanged);
-			// 
-			// J2Ax5Val
-			// 
-			this->J2Ax5Val->AutoSize = true;
-			this->J2Ax5Val->Location = System::Drawing::Point(60, 205);
-			this->J2Ax5Val->Name = L"J2Ax5Val";
-			this->J2Ax5Val->Size = System::Drawing::Size(0, 13);
-			this->J2Ax5Val->TabIndex = 12;
-			// 
-			// J2Ax5Lbl
-			// 
-			this->J2Ax5Lbl->AutoSize = true;
-			this->J2Ax5Lbl->Location = System::Drawing::Point(20, 205);
-			this->J2Ax5Lbl->Name = L"J2Ax5Lbl";
-			this->J2Ax5Lbl->Size = System::Drawing::Size(34, 13);
-			this->J2Ax5Lbl->TabIndex = 12;
-			this->J2Ax5Lbl->Text = L"axis5:";
-			// 
-			// J2Ax3Val
-			// 
-			this->J2Ax3Val->AutoSize = true;
-			this->J2Ax3Val->Location = System::Drawing::Point(60, 160);
-			this->J2Ax3Val->Name = L"J2Ax3Val";
-			this->J2Ax3Val->Size = System::Drawing::Size(0, 13);
-			this->J2Ax3Val->TabIndex = 12;
-			// 
-			// J2Ax3Lbl
-			// 
-			this->J2Ax3Lbl->AutoSize = true;
-			this->J2Ax3Lbl->Location = System::Drawing::Point(20, 160);
-			this->J2Ax3Lbl->Name = L"J2Ax3Lbl";
-			this->J2Ax3Lbl->Size = System::Drawing::Size(34, 13);
-			this->J2Ax3Lbl->TabIndex = 12;
-			this->J2Ax3Lbl->Text = L"axis3:";
-			// 
-			// J2Ax1Val
-			// 
-			this->J2Ax1Val->AutoSize = true;
-			this->J2Ax1Val->Location = System::Drawing::Point(60, 114);
-			this->J2Ax1Val->Name = L"J2Ax1Val";
-			this->J2Ax1Val->Size = System::Drawing::Size(0, 13);
-			this->J2Ax1Val->TabIndex = 12;
-			// 
-			// J2Ax1Lbl
-			// 
-			this->J2Ax1Lbl->AutoSize = true;
-			this->J2Ax1Lbl->Location = System::Drawing::Point(20, 114);
-			this->J2Ax1Lbl->Name = L"J2Ax1Lbl";
-			this->J2Ax1Lbl->Size = System::Drawing::Size(34, 13);
-			this->J2Ax1Lbl->TabIndex = 12;
-			this->J2Ax1Lbl->Text = L"axis1:";
-			// 
-			// J2Ax4Val
-			// 
-			this->J2Ax4Val->AutoSize = true;
-			this->J2Ax4Val->Location = System::Drawing::Point(60, 182);
-			this->J2Ax4Val->Name = L"J2Ax4Val";
-			this->J2Ax4Val->Size = System::Drawing::Size(0, 13);
-			this->J2Ax4Val->TabIndex = 12;
-			// 
-			// J2Ax4Lbl
-			// 
-			this->J2Ax4Lbl->AutoSize = true;
-			this->J2Ax4Lbl->Location = System::Drawing::Point(20, 182);
-			this->J2Ax4Lbl->Name = L"J2Ax4Lbl";
-			this->J2Ax4Lbl->Size = System::Drawing::Size(34, 13);
-			this->J2Ax4Lbl->TabIndex = 12;
-			this->J2Ax4Lbl->Text = L"axis4:";
-			// 
-			// J2Ax2Val
-			// 
-			this->J2Ax2Val->AutoSize = true;
-			this->J2Ax2Val->Location = System::Drawing::Point(60, 137);
-			this->J2Ax2Val->Name = L"J2Ax2Val";
-			this->J2Ax2Val->Size = System::Drawing::Size(0, 13);
-			this->J2Ax2Val->TabIndex = 12;
-			// 
-			// J2Ax2Lbl
-			// 
-			this->J2Ax2Lbl->AutoSize = true;
-			this->J2Ax2Lbl->Location = System::Drawing::Point(20, 137);
-			this->J2Ax2Lbl->Name = L"J2Ax2Lbl";
-			this->J2Ax2Lbl->Size = System::Drawing::Size(34, 13);
-			this->J2Ax2Lbl->TabIndex = 12;
-			this->J2Ax2Lbl->Text = L"axis2:";
-			// 
-			// J2Ax0Val
-			// 
-			this->J2Ax0Val->AutoSize = true;
-			this->J2Ax0Val->Cursor = System::Windows::Forms::Cursors::Arrow;
-			this->J2Ax0Val->Location = System::Drawing::Point(60, 91);
-			this->J2Ax0Val->Name = L"J2Ax0Val";
-			this->J2Ax0Val->Size = System::Drawing::Size(0, 13);
-			this->J2Ax0Val->TabIndex = 12;
-			// 
-			// J2Ax0Lbl
-			// 
-			this->J2Ax0Lbl->AutoSize = true;
-			this->J2Ax0Lbl->Location = System::Drawing::Point(20, 91);
-			this->J2Ax0Lbl->Name = L"J2Ax0Lbl";
-			this->J2Ax0Lbl->Size = System::Drawing::Size(34, 13);
-			this->J2Ax0Lbl->TabIndex = 12;
-			this->J2Ax0Lbl->Text = L"axis0:";
-			// 
-			// label21
-			// 
-			this->label21->AutoSize = true;
-			this->label21->Location = System::Drawing::Point(6, 26);
-			this->label21->Name = L"label21";
-			this->label21->Size = System::Drawing::Size(57, 13);
-			this->label21->TabIndex = 10;
-			this->label21->Text = L"Joystick 2:";
-			// 
-			// RefreshJoys2
-			// 
-			this->RefreshJoys2->Location = System::Drawing::Point(155, 24);
-			this->RefreshJoys2->Name = L"RefreshJoys2";
-			this->RefreshJoys2->Size = System::Drawing::Size(49, 23);
-			this->RefreshJoys2->TabIndex = 11;
-			this->RefreshJoys2->Text = L"Reload";
-			this->RefreshJoys2->UseVisualStyleBackColor = true;
-			this->RefreshJoys2->Click += gcnew System::EventHandler(this, &commands::RefreshJoys_Click);
-			// 
-			// Joy2Lst
-			// 
-			this->Joy2Lst->FormattingEnabled = true;
-			this->Joy2Lst->Location = System::Drawing::Point(63, 23);
-			this->Joy2Lst->Name = L"Joy2Lst";
-			this->Joy2Lst->Size = System::Drawing::Size(28, 21);
-			this->Joy2Lst->TabIndex = 9;
-			// 
-			// ConnJoy2
-			// 
-			this->ConnJoy2->Location = System::Drawing::Point(94, 23);
-			this->ConnJoy2->Name = L"ConnJoy2";
-			this->ConnJoy2->Size = System::Drawing::Size(55, 23);
-			this->ConnJoy2->TabIndex = 11;
-			this->ConnJoy2->Text = L"Connect";
-			this->ConnJoy2->UseVisualStyleBackColor = true;
-			this->ConnJoy2->Click += gcnew System::EventHandler(this, &commands::ConnJoys_Click);
+			// J0Lst
+			// 
+			this->J0Lst->FormattingEnabled = true;
+			this->J0Lst->Location = System::Drawing::Point(10, 16);
+			this->J0Lst->Name = L"J0Lst";
+			this->J0Lst->Size = System::Drawing::Size(31, 21);
+			this->J0Lst->TabIndex = 1;
+			// 
+			// J0Conn
+			// 
+			this->J0Conn->Location = System::Drawing::Point(54, 15);
+			this->J0Conn->Name = L"J0Conn";
+			this->J0Conn->Size = System::Drawing::Size(56, 23);
+			this->J0Conn->TabIndex = 2;
+			this->J0Conn->Text = L"Connect";
+			this->J0Conn->UseVisualStyleBackColor = true;
+			this->J0Conn->Click += gcnew System::EventHandler(this, &commands::J0Conn_Click);
+			// 
+			// J0Disconn
+			// 
+			this->J0Disconn->Location = System::Drawing::Point(123, 15);
+			this->J0Disconn->Name = L"J0Disconn";
+			this->J0Disconn->Size = System::Drawing::Size(70, 23);
+			this->J0Disconn->TabIndex = 3;
+			this->J0Disconn->Text = L"Disconnect";
+			this->J0Disconn->UseVisualStyleBackColor = true;
+			this->J0Disconn->Click += gcnew System::EventHandler(this, &commands::J0Disconn_Click);
+			// 
+			// J0A1Lbl
+			// 
+			this->J0A1Lbl->AutoSize = true;
+			this->J0A1Lbl->Location = System::Drawing::Point(6, 80);
+			this->J0A1Lbl->Name = L"J0A1Lbl";
+			this->J0A1Lbl->Size = System::Drawing::Size(35, 13);
+			this->J0A1Lbl->TabIndex = 4;
+			this->J0A1Lbl->Text = L"Axis1:";
+			// 
+			// J0A3Lbl
+			// 
+			this->J0A3Lbl->AutoSize = true;
+			this->J0A3Lbl->Location = System::Drawing::Point(99, 81);
+			this->J0A3Lbl->Name = L"J0A3Lbl";
+			this->J0A3Lbl->Size = System::Drawing::Size(35, 13);
+			this->J0A3Lbl->TabIndex = 4;
+			this->J0A3Lbl->Text = L"Axis3:";
+			// 
+			// label9
+			// 
+			this->label9->AutoSize = true;
+			this->label9->Location = System::Drawing::Point(7, 56);
+			this->label9->Name = L"label9";
+			this->label9->Size = System::Drawing::Size(58, 13);
+			this->label9->TabIndex = 5;
+			this->label9->Text = L"Correction:";
+			// 
+			// R0M0Corr
+			// 
+			this->R0M0Corr->Location = System::Drawing::Point(72, 52);
+			this->R0M0Corr->Name = L"R0M0Corr";
+			this->R0M0Corr->Size = System::Drawing::Size(57, 20);
+			this->R0M0Corr->TabIndex = 6;
+			// 
+			// R0M1Corr
+			// 
+			this->R0M1Corr->Location = System::Drawing::Point(136, 52);
+			this->R0M1Corr->Name = L"R0M1Corr";
+			this->R0M1Corr->Size = System::Drawing::Size(57, 20);
+			this->R0M1Corr->TabIndex = 6;
+			// 
+			// J0A1Val
+			// 
+			this->J0A1Val->AutoSize = true;
+			this->J0A1Val->Location = System::Drawing::Point(59, 81);
+			this->J0A1Val->Name = L"J0A1Val";
+			this->J0A1Val->Size = System::Drawing::Size(22, 13);
+			this->J0A1Val->TabIndex = 7;
+			this->J0A1Val->Text = L"Val";
+			// 
+			// J0A3Val
+			// 
+			this->J0A3Val->AutoSize = true;
+			this->J0A3Val->Location = System::Drawing::Point(152, 81);
+			this->J0A3Val->Name = L"J0A3Val";
+			this->J0A3Val->Size = System::Drawing::Size(22, 13);
+			this->J0A3Val->TabIndex = 7;
+			this->J0A3Val->Text = L"Val";
+			// 
+			// Joystick0box
+			// 
+			this->Joystick0box->Controls->Add(this->J0A3Val);
+			this->Joystick0box->Controls->Add(this->J0A1Val);
+			this->Joystick0box->Controls->Add(this->R0M1Corr);
+			this->Joystick0box->Controls->Add(this->R0M0Corr);
+			this->Joystick0box->Controls->Add(this->label9);
+			this->Joystick0box->Controls->Add(this->J0A3Lbl);
+			this->Joystick0box->Controls->Add(this->J0A1Lbl);
+			this->Joystick0box->Controls->Add(this->J0Disconn);
+			this->Joystick0box->Controls->Add(this->J0Conn);
+			this->Joystick0box->Controls->Add(this->J0Lst);
+			this->Joystick0box->Location = System::Drawing::Point(520, 12);
+			this->Joystick0box->Name = L"Joystick0box";
+			this->Joystick0box->Size = System::Drawing::Size(200, 101);
+			this->Joystick0box->TabIndex = 13;
+			this->Joystick0box->TabStop = false;
+			this->Joystick0box->Text = L"Joystick 0";
+			// 
+			// J1Lst
+			// 
+			this->J1Lst->FormattingEnabled = true;
+			this->J1Lst->Location = System::Drawing::Point(10, 16);
+			this->J1Lst->Name = L"J1Lst";
+			this->J1Lst->Size = System::Drawing::Size(31, 21);
+			this->J1Lst->TabIndex = 1;
+			// 
+			// J1Conn
+			// 
+			this->J1Conn->Location = System::Drawing::Point(54, 15);
+			this->J1Conn->Name = L"J1Conn";
+			this->J1Conn->Size = System::Drawing::Size(56, 23);
+			this->J1Conn->TabIndex = 2;
+			this->J1Conn->Text = L"Connect";
+			this->J1Conn->UseVisualStyleBackColor = true;
+			this->J1Conn->Click += gcnew System::EventHandler(this, &commands::J1Conn_Click);
+			// 
+			// J1Disconn
+			// 
+			this->J1Disconn->Location = System::Drawing::Point(123, 15);
+			this->J1Disconn->Name = L"J1Disconn";
+			this->J1Disconn->Size = System::Drawing::Size(70, 23);
+			this->J1Disconn->TabIndex = 3;
+			this->J1Disconn->Text = L"Disconnect";
+			this->J1Disconn->UseVisualStyleBackColor = true;
+			this->J1Disconn->Click += gcnew System::EventHandler(this, &commands::J1Disconn_Click);
+			// 
+			// J1A1Lbl
+			// 
+			this->J1A1Lbl->AutoSize = true;
+			this->J1A1Lbl->Location = System::Drawing::Point(6, 80);
+			this->J1A1Lbl->Name = L"J1A1Lbl";
+			this->J1A1Lbl->Size = System::Drawing::Size(35, 13);
+			this->J1A1Lbl->TabIndex = 4;
+			this->J1A1Lbl->Text = L"Axis1:";
+			// 
+			// J1A3Lbl
+			// 
+			this->J1A3Lbl->AutoSize = true;
+			this->J1A3Lbl->Location = System::Drawing::Point(99, 81);
+			this->J1A3Lbl->Name = L"J1A3Lbl";
+			this->J1A3Lbl->Size = System::Drawing::Size(35, 13);
+			this->J1A3Lbl->TabIndex = 4;
+			this->J1A3Lbl->Text = L"Axis3:";
+			// 
+			// label11
+			// 
+			this->label11->AutoSize = true;
+			this->label11->Location = System::Drawing::Point(7, 56);
+			this->label11->Name = L"label11";
+			this->label11->Size = System::Drawing::Size(58, 13);
+			this->label11->TabIndex = 5;
+			this->label11->Text = L"Correction:";
+			// 
+			// R1M0Corr
+			// 
+			this->R1M0Corr->Location = System::Drawing::Point(72, 52);
+			this->R1M0Corr->Name = L"R1M0Corr";
+			this->R1M0Corr->Size = System::Drawing::Size(57, 20);
+			this->R1M0Corr->TabIndex = 6;
+			// 
+			// R1M1Corr
+			// 
+			this->R1M1Corr->Location = System::Drawing::Point(136, 52);
+			this->R1M1Corr->Name = L"R1M1Corr";
+			this->R1M1Corr->Size = System::Drawing::Size(57, 20);
+			this->R1M1Corr->TabIndex = 6;
+			// 
+			// J1A1Val
+			// 
+			this->J1A1Val->AutoSize = true;
+			this->J1A1Val->Location = System::Drawing::Point(59, 81);
+			this->J1A1Val->Name = L"J1A1Val";
+			this->J1A1Val->Size = System::Drawing::Size(22, 13);
+			this->J1A1Val->TabIndex = 7;
+			this->J1A1Val->Text = L"Val";
+			// 
+			// J1A3Val
+			// 
+			this->J1A3Val->AutoSize = true;
+			this->J1A3Val->Location = System::Drawing::Point(152, 81);
+			this->J1A3Val->Name = L"J1A3Val";
+			this->J1A3Val->Size = System::Drawing::Size(22, 13);
+			this->J1A3Val->TabIndex = 7;
+			this->J1A3Val->Text = L"Val";
+			// 
+			// Joystick1box
+			// 
+			this->Joystick1box->Controls->Add(this->J1A3Val);
+			this->Joystick1box->Controls->Add(this->J1A1Val);
+			this->Joystick1box->Controls->Add(this->R1M1Corr);
+			this->Joystick1box->Controls->Add(this->R1M0Corr);
+			this->Joystick1box->Controls->Add(this->label11);
+			this->Joystick1box->Controls->Add(this->J1A3Lbl);
+			this->Joystick1box->Controls->Add(this->J1A1Lbl);
+			this->Joystick1box->Controls->Add(this->J1Disconn);
+			this->Joystick1box->Controls->Add(this->J1Conn);
+			this->Joystick1box->Controls->Add(this->J1Lst);
+			this->Joystick1box->Location = System::Drawing::Point(520, 121);
+			this->Joystick1box->Name = L"Joystick1box";
+			this->Joystick1box->Size = System::Drawing::Size(200, 101);
+			this->Joystick1box->TabIndex = 13;
+			this->Joystick1box->TabStop = false;
+			this->Joystick1box->Text = L"Joystick 1";
+			// 
+			// button1
+			// 
+			this->button1->Location = System::Drawing::Point(571, 225);
+			this->button1->Name = L"button1";
+			this->button1->Size = System::Drawing::Size(98, 23);
+			this->button1->TabIndex = 14;
+			this->button1->Text = L"Refresh Joysticks";
+			this->button1->UseVisualStyleBackColor = true;
 			// 
 			// commands
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(965, 275);
-			this->Controls->Add(this->Joystick2Box);
-			this->Controls->Add(this->Joystick1Box);
+			this->ClientSize = System::Drawing::Size(728, 274);
+			this->Controls->Add(this->button1);
+			this->Controls->Add(this->Joystick1box);
+			this->Controls->Add(this->Joystick0box);
 			this->Controls->Add(this->SerialTimerBox);
 			this->Controls->Add(this->Historico);
 			this->Controls->Add(this->CommandsBox);
@@ -861,14 +764,14 @@ private: System::Windows::Forms::Button^  RefreshJoys2;
 			this->SerialTimerBox->ResumeLayout(false);
 			this->SerialTimerBox->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TimerMilis))->EndInit();
-			this->Joystick1Box->ResumeLayout(false);
-			this->Joystick1Box->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Mt1R1corr))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Mt0R1corr))->EndInit();
-			this->Joystick2Box->ResumeLayout(false);
-			this->Joystick2Box->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Mt1R2corr))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->Mt0R2corr))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->R0M0Corr))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->R0M1Corr))->EndInit();
+			this->Joystick0box->ResumeLayout(false);
+			this->Joystick0box->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->R1M0Corr))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->R1M1Corr))->EndInit();
+			this->Joystick1box->ResumeLayout(false);
+			this->Joystick1box->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -895,22 +798,25 @@ private: System::Windows::Forms::Button^  RefreshJoys2;
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private: System::Void SerialTimer_Tick(System::Object^  sender, System::EventArgs^  e);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	private: System::Void ConnJoys_Click(System::Object^  sender, System::EventArgs^  e);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private: System::Void RefreshJoys_Click(System::Object^  sender, System::EventArgs^  e);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private: int JoyToHB(int, int);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private: void JoystickWatch();
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	private: bool SetMotor(int, int, int);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	private: System::Void DisconnJoy_Click(System::Object^  sender, System::EventArgs^  e);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private: bool SendSerial(String^); //master
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private: System::Void CorrectionChanged(System::Object^  sender, System::EventArgs^  e);
-		 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private: bool SetMotors(int, int, int);
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private: System::Void J0Conn_Click(System::Object^  sender, System::EventArgs^  e);
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private: System::Void J1Conn_Click(System::Object^  sender, System::EventArgs^  e);
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private: System::Void J0Disconn_Click(System::Object^  sender, System::EventArgs^  e);
+		 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private: System::Void J1Disconn_Click(System::Object^  sender, System::EventArgs^  e);
+		 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 };
 }
