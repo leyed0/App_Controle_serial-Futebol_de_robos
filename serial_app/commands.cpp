@@ -186,11 +186,11 @@ bool commands::SetMotors(int robot, int vx, int vy) {
 
 	//define speed in steering
 	if (vx>=0)
-		if (vy > 0) speed[1] -= vy*0.3;
-		else if (vy < 0) speed[0] -= -vy*0.3;
+		if (vy > 0) speed[1] -= vy*0.5;
+		else if (vy < 0) speed[0] -= -vy*0.5;
 	else if (vx >= 0)
-		if (vy > 0) speed[1] -= vy*0.3;
-		else if (vy < 0) speed[0] -= -vy*0.3;
+		if (vy > 0) speed[1] -= vy*0.5;
+		else if (vy < 0) speed[0] -= -vy*0.5;
 
 	//define positive direction
 	if (speed[0] >= 0) dir[0] = 1;
