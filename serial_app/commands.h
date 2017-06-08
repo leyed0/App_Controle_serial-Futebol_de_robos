@@ -579,6 +579,7 @@ namespace serial_app {
 			this->R0M0Corr->Name = L"R0M0Corr";
 			this->R0M0Corr->Size = System::Drawing::Size(57, 20);
 			this->R0M0Corr->TabIndex = 6;
+			this->R0M0Corr->ValueChanged += gcnew System::EventHandler(this, &commands::CorrectionChanged);
 			// 
 			// R0M1Corr
 			// 
@@ -586,6 +587,7 @@ namespace serial_app {
 			this->R0M1Corr->Name = L"R0M1Corr";
 			this->R0M1Corr->Size = System::Drawing::Size(57, 20);
 			this->R0M1Corr->TabIndex = 6;
+			this->R0M1Corr->ValueChanged += gcnew System::EventHandler(this, &commands::CorrectionChanged);
 			// 
 			// J0A1Val
 			// 
@@ -685,6 +687,7 @@ namespace serial_app {
 			this->R1M0Corr->Name = L"R1M0Corr";
 			this->R1M0Corr->Size = System::Drawing::Size(57, 20);
 			this->R1M0Corr->TabIndex = 6;
+			this->R1M0Corr->ValueChanged += gcnew System::EventHandler(this, &commands::CorrectionChanged);
 			// 
 			// R1M1Corr
 			// 
@@ -692,6 +695,7 @@ namespace serial_app {
 			this->R1M1Corr->Name = L"R1M1Corr";
 			this->R1M1Corr->Size = System::Drawing::Size(57, 20);
 			this->R1M1Corr->TabIndex = 6;
+			this->R1M1Corr->ValueChanged += gcnew System::EventHandler(this, &commands::CorrectionChanged);
 			// 
 			// J1A1Val
 			// 

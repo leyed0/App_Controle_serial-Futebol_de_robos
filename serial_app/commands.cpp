@@ -9,9 +9,7 @@ using namespace serial_app;
 bool commands::SendSerial(String^ str)
 {
 	//if (!serialbusy) {
-		serialbusy = true;
 		serial->Write(str);
-		serialbusy = false;
 		return true;
 	//}
 	return false;
@@ -28,6 +26,14 @@ System::Void serial_app::commands::CorrectionChanged(System::Object ^ sender, Sy
 
 commands::commands(System::String^ Port, System::Int32 Baud)
 {
+	correctionmotor = new int*[2];
+	correctionmotor[0] = new int[2];
+	correctionmotor[1] = new int[2];
+	correctionmotor[0][0] = 0;
+	correctionmotor[0][1] = 0;
+	correctionmotor[1][0] = 0;
+	correctionmotor[1][1] = 0;
+
 	InitializeComponent();
 	serial = gcnew SerialPort(Port, Baud);
 	serial->ReadTimeout = 50;
@@ -55,27 +61,12 @@ commands::~commands()
 }
 
 Void commands::commands_Load(System::Object^  sender, System::EventArgs^  e) {
-	
-	//alocando matriz
-	correctionmotor = new int*[2];
-	correctionmotor[0] = new int[2];
-	correctionmotor[1] = new int[2];
-	//matriz alocada
-	correctionmotor[0][0] = correctionmotor[0][1] = correctionmotor[1][0] = correctionmotor[1][1] = 0;
 	SDLWin = new SDLWindow;
 	if (!SDLWin->Start()) MessageBox::Show("SDLStart ERROR!");
 	SerialTimer->Enabled = true;
 	listJoys();
 }
 
-void commands::listJoys() {
-	if (!SDLWin->IsJoyConnected(0)) J0Lst->Items->Clear();
-	if (!SDLWin->IsJoyConnected(1)) J1Lst->Items->Clear();
-	for (int i = 1; i <= SDLWin->JoystickCount(); i++) {
-		if (!SDLWin->IsJoyConnected(0)) J0Lst->Items->Add(i);
-		if (!SDLWin->IsJoyConnected(1)) J1Lst->Items->Add(i);
-	}
-}
 
 Void commands::checkBox1_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
 	try
@@ -115,12 +106,9 @@ Void commands::Console_KeyDown(System::Object^  sender, System::Windows::Forms::
 		}
 		if (Write != "")
 		{
-			if (Write[0] == 's') {
-				serialbusy = true;
-				serial->Write(Write);
-				serialbusy = false;
-				Historico->Text += "W - " + Write + "\n";
-			}
+			serial->Write(Write);
+			serialbusy = true;
+			Historico->Text += "W - " + Write + "\n";
 		}
 		else
 		{
@@ -170,7 +158,9 @@ Void commands::SerialTimer_Tick(System::Object^  sender, System::EventArgs^  e) 
 		Historico->Text += "Erro: Serial Desconectado.";
 		
 		while (!serial->IsOpen) {
-			if (MessageBox::Show("Conexão com dispositivo perdida. Reconectar?", "Error!", MessageBoxButtons::OKCancel, MessageBoxIcon::Exclamation) == System::Windows::Forms::DialogResult::OK) {
+			System::Windows::Forms::DialogResult result = MessageBox::Show("Conexão com dispositivo perdida. Reconectar?", "Error!", MessageBoxButtons::OKCancel, MessageBoxIcon::Exclamation);
+			MessageBox::Show(result.ToString());
+			if (result == System::Windows::Forms::DialogResult::OK) {
 				try
 				{
 					serial->Open();
@@ -179,36 +169,57 @@ Void commands::SerialTimer_Tick(System::Object^  sender, System::EventArgs^  e) 
 				{
 				}
 			}
+			else {
+				this->Close();
+				return;
+			}
 		}
 	}
 	SerialTimer->Start();
 }
 
-bool commands::SetMotors(int robot, int v1, int v2) {
+//OKOK
+bool commands::SetMotors(int robot, int vx, int vy) {
 	int dir[2] = { 0,0 };
-	int speed[2] = { v1, v1 };
+	int speed[2] = { vx, vx };
+	//0=roda0 - 1=roda1
 
-	//define speed in sterring
-	if (v2 < 0 && speed[0] >= 0 || v2 >= 0 && speed[0] < 0) speed[0] += v2*0.3;
-	else speed[1] -=v2*0.3;
+	//define speed in steering
+	if (vx>=0)
+		if (vy > 0) speed[1] -= vy*0.3;
+		else if (vy < 0) speed[0] -= -vy*0.3;
+	else if (vx >= 0)
+		if (vy > 0) speed[1] -= vy*0.3;
+		else if (vy < 0) speed[0] -= -vy*0.3;
 
 	//define positive direction
 	if (speed[0] >= 0) dir[0] = 1;
 	if (speed[1] >= 0) dir[1] = 1;
-	
-	//applying correction factors
-	if (correctionmotor[robot][0] != 0) speed[0] -= (speed[0]*((float)correctionmotor[robot][0] / 100));
-	if (correctionmotor[robot][1] != 0) speed[1] -= (speed[1] * ((float)correctionmotor[robot][1] / 100));
+
+	//applying correction factor
+		speed[0] -= (float)speed[0] * correctionmotor[robot][0] / 100;
+		speed[1] -= (float)speed[1] * correctionmotor[robot][1] / 100;
 
 	//modulate the data to be sent
-	String^ msg = "M" + robot + "." + abs(speed[0]) + "." + dir[0]+"."+ abs(speed[0]) + "." + dir[0] + ".";
+	String^ msg = "M" + robot + "." + abs(speed[0]) + "." + dir[0]+"."+ abs(speed[1]) + "." + dir[1] + ".";
 	Bufferlbl->Text = msg;
 	if (SendSerial(msg)) return true;
 	return false;
 }
 
+//OK
+void commands::listJoys() {
+	if (!SDLWin->IsJoyConnected(0)) J0Lst->Items->Clear();
+	if (!SDLWin->IsJoyConnected(1)) J1Lst->Items->Clear();
+	for (int i = 1; i <= SDLWin->JoystickCount(); i++) {
+		if (!SDLWin->IsJoyConnected(0)) J0Lst->Items->Add(i);
+		if (!SDLWin->IsJoyConnected(1)) J1Lst->Items->Add(i);
+	}
+}
+
 //Should be Better
 int commands::JoyToHB(int joy, int axis) {
+	if(axis==1) return -(int)(SDLWin->JoystickGetAxis(joy, axis) / 128.3);
 	return (int)(SDLWin->JoystickGetAxis(joy, axis) / 128.3);
 }
 
@@ -223,22 +234,22 @@ void commands::JoystickWatch()
 {
 	if (!serialbusy) {
 		//Bufferlbl->Text = Convert::ToString(JoyToHB(0));
-		J0A1Val->Text = Convert::ToString(-JoyToHB(0, 1));
+		J0A1Val->Text = Convert::ToString(JoyToHB(0, 1));
 		J0A3Val->Text = Convert::ToString(JoyToHB(0, 3));
-		if (-JoyToHB(0, 1) != LastAxVal[0][1] || JoyToHB(0, 3) != LastAxVal[0][3])
-			if (SetMotors(0, -JoyToHB(0, 1), JoyToHB(0, 3))) {
-				LastAxVal[0][1] = -JoyToHB(0, 1);
-				LastAxVal[0][3] = JoyToHB(0, 3);
-			}
+		if (JoyToHB(0, 1) != LastAxVal[0][1] || JoyToHB(0, 3) != LastAxVal[0][3]) {
+			LastAxVal[0][1] = JoyToHB(0, 1);
+			LastAxVal[0][3] = JoyToHB(0, 3);
+			if (SetMotors(0, JoyToHB(0, 1), JoyToHB(0, 3)));
+		}
 
 
 		J1A1Val->Text = Convert::ToString(-JoyToHB(1, 1));
 		J1A3Val->Text = Convert::ToString(JoyToHB(1, 3));
-		if (-JoyToHB(1, 1) != LastAxVal[1][1] || JoyToHB(1, 3) != LastAxVal[1][3])
-			if (SetMotors(1, -JoyToHB(1, 1), JoyToHB(1, 3))) {
-				LastAxVal[1][1] = -JoyToHB(1, 1);
-				LastAxVal[1][3] = JoyToHB(1, 3);
-			}
+		if (JoyToHB(1, 1) != LastAxVal[1][1] || JoyToHB(1, 3) != LastAxVal[1][3]) {
+			LastAxVal[1][1] = JoyToHB(1, 1);
+			LastAxVal[1][3] = JoyToHB(1, 3);
+			if (SetMotors(1, JoyToHB(1, 1), JoyToHB(1, 3)));
+		}
 	}
 }
 

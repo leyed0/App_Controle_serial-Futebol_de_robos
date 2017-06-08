@@ -166,6 +166,7 @@ namespace serial_app {
 			this->Hide();
 			Comm->ShowDialog();
 			this->Show();
+			return;
 	}
 			 
 };
