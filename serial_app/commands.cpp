@@ -191,8 +191,8 @@ bool commands::SetMotors(int robot, int vx, int vy) {
 	}
 	else {
 		if (vx < 0)
-			if (vy > 0) speed[0] -= -vy*0.5;
-			else if (vy < 0) speed[1] -= vy*0.5;
+			if (vy > 0) speed[0] += -vy*0.5;
+			else if (vy < 0) speed[1] += vy*0.5;
 	}
 	if (vx == 0) {
 		if (vy != 0) { 
