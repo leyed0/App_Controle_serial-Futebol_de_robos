@@ -191,8 +191,8 @@ bool commands::SetMotors(int robot, int vx, int vy) {
 	}
 	else {
 		if (vx < 0)
-			if (vy > 0) speed[0] -= vy*0.5;
-			else if (vy < 0) speed[1] -= -vy*0.5;
+			if (vy > 0) speed[0] -= -vy*0.5;
+			else if (vy < 0) speed[1] -= vy*0.5;
 	}
 	if (vx == 0) {
 		if (vy != 0) { 
@@ -236,14 +236,8 @@ int commands::JoyToHB(int joy, int axis) {
 //OK
 void commands::JoystickWatch(int id)
 {
-	if (SDLWin->JoyShouldConnect(0)) try
-	{
-		SDLWin->JoystickConnect(0);
-	}
-	catch (Exception^ e)
-	{
-
-	}
+	if (SDLWin->JoyShouldConnect(0) && !SDLWin->IsJoyConnected(0)) J0ConnBtn();
+	if (SDLWin->JoyShouldConnect(1) && !SDLWin->IsJoyConnected(1)) J1ConnBtn();
 	if (!serialbusy) {
 		if (SDLWin->IsJoyConnected(0)) {
 			J0A1Val->Text = Convert::ToString(JoyToHB(0, 1));
@@ -270,32 +264,50 @@ void commands::JoystickWatch(int id)
 //OK
 System::Void serial_app::commands::J0Conn_Click(System::Object ^ sender, System::EventArgs ^ e)
 {
-	if (SDLWin->JoystickConnect(0, Convert::ToInt16(J0Lst->Text))) MessageBox::Show("Joystick" + (Convert::ToInt16(J0Lst->Text) - 1) + "Conectado!");
-	else MessageBox::Show("Erro!");
-	SDLWin->Start();
+	J0ConnBtn();
 }
 
 //OK
 System::Void serial_app::commands::J1Conn_Click(System::Object ^ sender, System::EventArgs ^ e)
 {
-	if (SDLWin->JoystickConnect(1, Convert::ToInt16(J1Lst->Text))) MessageBox::Show("Joystick" + (Convert::ToInt16(J1Lst->Text) - 1) + "Conectado!");
-	else MessageBox::Show("Erro!");
-	SDLWin->Start();
+	J1ConnBtn();
 }
 
 //OK
 System::Void serial_app::commands::J0Disconn_Click(System::Object ^ sender, System::EventArgs ^ e)
 {
+	Joystick0box->BackColor = System::Drawing::SystemColors::Control;
 	SDLWin->JoystickDisconnect(0);
 }
 
 //OK
 System::Void serial_app::commands::J1Disconn_Click(System::Object ^ sender, System::EventArgs ^ e)
 {
+	Joystick1box->BackColor = System::Drawing::SystemColors::Control;
 	SDLWin->JoystickDisconnect(1);
 }
 
 System::Void serial_app::commands::RefreshJoys_Click(System::Object ^ sender, System::EventArgs ^ e)
 {
 	listJoys();
+}
+
+void serial_app::commands::J0ConnBtn()
+{
+	if (SDLWin->JoystickConnect(0, Convert::ToInt16(J0Lst->Text))) Joystick0box->BackColor = System::Drawing::Color::LightGreen;
+	else {
+		Joystick0box->BackColor = System::Drawing::Color::Red;
+		SendSerial("M0.0.1.0.1.");
+	}
+	SDLWin->Start();
+}
+
+void serial_app::commands::J1ConnBtn()
+{
+	if (SDLWin->JoystickConnect(1, Convert::ToInt16(J1Lst->Text))) Joystick1box->BackColor = System::Drawing::Color::LightGreen;
+	else{ 
+		Joystick1box->BackColor = System::Drawing::Color::Red;
+		SendSerial("M1.0.1.0.1.");
+	}
+	SDLWin->Start();
 }
