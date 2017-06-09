@@ -145,7 +145,7 @@ Void commands::TimerMilis_ValueChanged(System::Object^  sender, System::EventArg
 
 Void commands::SerialTimer_Tick(System::Object^  sender, System::EventArgs^  e) {
 	SerialTimer->Stop();
-	JoystickWatch();
+	JoystickWatch(0);
 	if(!SDLWin->Busy()) SDLWin->MainLoop();
 	if (serial->IsOpen) {
 		if (serial->BytesToRead > 0)
@@ -185,20 +185,29 @@ bool commands::SetMotors(int robot, int vx, int vy) {
 	//0=roda0 - 1=roda1
 
 	//define speed in steering
-	if (vx>=0)
+	if (vx >= 0) {
 		if (vy > 0) speed[1] -= vy*0.5;
 		else if (vy < 0) speed[0] -= -vy*0.5;
-	else if (vx >= 0)
-		if (vy > 0) speed[1] -= vy*0.5;
-		else if (vy < 0) speed[0] -= -vy*0.5;
-
-	//define positive direction
-	if (speed[0] >= 0) dir[0] = 1;
-	if (speed[1] >= 0) dir[1] = 1;
+	}
+	else {
+		if (vx < 0)
+			if (vy > 0) speed[0] -= vy*0.5;
+			else if (vy < 0) speed[1] -= -vy*0.5;
+	}
+	if (vx == 0) {
+		if (vy != 0) { 
+			speed[0] = vy*0.5;
+			speed[1] = -vy*0.5;
+		}
+	}
 
 	//applying correction factor
 		speed[0] -= (float)speed[0] * correctionmotor[robot][0] / 100;
 		speed[1] -= (float)speed[1] * correctionmotor[robot][1] / 100;
+
+	//define positive direction
+	if (speed[0] >= 0) dir[0] = 1;
+	if (speed[1] >= 0) dir[1] = 1;
 
 	//modulate the data to be sent
 	String^ msg = "M" + robot + "." + abs(speed[0]) + "." + dir[0]+"."+ abs(speed[1]) + "." + dir[1] + ".";
@@ -211,7 +220,7 @@ bool commands::SetMotors(int robot, int vx, int vy) {
 void commands::listJoys() {
 	if (!SDLWin->IsJoyConnected(0)) J0Lst->Items->Clear();
 	if (!SDLWin->IsJoyConnected(1)) J1Lst->Items->Clear();
-	for (int i = 1; i <= SDLWin->JoystickCount(); i++) {
+	for (int i = 0; i < SDLWin->JoystickCount(); i++) {
 		if (!SDLWin->IsJoyConnected(0)) J0Lst->Items->Add(i);
 		if (!SDLWin->IsJoyConnected(1)) J1Lst->Items->Add(i);
 	}
@@ -223,32 +232,37 @@ int commands::JoyToHB(int joy, int axis) {
 	return (int)(SDLWin->JoystickGetAxis(joy, axis) / 128.3);
 }
 
-//OK
-System::Void serial_app::commands::RefreshJoys_Click(System::Object ^ sender, System::EventArgs ^ e)
-{
-	listJoys();
-}
 
 //OK
-void commands::JoystickWatch()
+void commands::JoystickWatch(int id)
 {
+	if (SDLWin->JoyShouldConnect(0)) try
+	{
+		SDLWin->JoystickConnect(0);
+	}
+	catch (Exception^ e)
+	{
+
+	}
 	if (!serialbusy) {
-		//Bufferlbl->Text = Convert::ToString(JoyToHB(0));
-		J0A1Val->Text = Convert::ToString(JoyToHB(0, 1));
-		J0A3Val->Text = Convert::ToString(JoyToHB(0, 3));
-		if (JoyToHB(0, 1) != LastAxVal[0][1] || JoyToHB(0, 3) != LastAxVal[0][3]) {
-			LastAxVal[0][1] = JoyToHB(0, 1);
-			LastAxVal[0][3] = JoyToHB(0, 3);
-			if (SetMotors(0, JoyToHB(0, 1), JoyToHB(0, 3)));
+		if (SDLWin->IsJoyConnected(0)) {
+			J0A1Val->Text = Convert::ToString(JoyToHB(0, 1));
+			J0A3Val->Text = Convert::ToString(JoyToHB(0, 3));
+			if (JoyToHB(0, 1) != LastAxVal[0][1] || JoyToHB(0, 3) != LastAxVal[0][3]) 
+				if (SetMotors(0, JoyToHB(0, 1), JoyToHB(0, 3))); {
+				LastAxVal[0][1] = JoyToHB(0, 1);
+				LastAxVal[0][3] = JoyToHB(0, 3);
+			}
 		}
 
-
-		J1A1Val->Text = Convert::ToString(-JoyToHB(1, 1));
-		J1A3Val->Text = Convert::ToString(JoyToHB(1, 3));
-		if (JoyToHB(1, 1) != LastAxVal[1][1] || JoyToHB(1, 3) != LastAxVal[1][3]) {
-			LastAxVal[1][1] = JoyToHB(1, 1);
-			LastAxVal[1][3] = JoyToHB(1, 3);
-			if (SetMotors(1, JoyToHB(1, 1), JoyToHB(1, 3)));
+		if (SDLWin->IsJoyConnected(1)) {
+			J1A1Val->Text = Convert::ToString(-JoyToHB(1, 1));
+			J1A3Val->Text = Convert::ToString(JoyToHB(1, 3));
+			if (JoyToHB(1, 1) != LastAxVal[1][1] || JoyToHB(1, 3) != LastAxVal[1][3]) 
+				if (SetMotors(1, JoyToHB(1, 1), JoyToHB(1, 3))) {
+					LastAxVal[1][1] = JoyToHB(1, 1);
+					LastAxVal[1][3] = JoyToHB(1, 3);
+				}
 		}
 	}
 }
@@ -256,7 +270,7 @@ void commands::JoystickWatch()
 //OK
 System::Void serial_app::commands::J0Conn_Click(System::Object ^ sender, System::EventArgs ^ e)
 {
-	if (SDLWin->JoystickConnect(0, Convert::ToInt16(J0Lst->Text) - 1)) MessageBox::Show("Joystick" + (Convert::ToInt16(J0Lst->Text) - 1) + "Conectado!");
+	if (SDLWin->JoystickConnect(0, Convert::ToInt16(J0Lst->Text))) MessageBox::Show("Joystick" + (Convert::ToInt16(J0Lst->Text) - 1) + "Conectado!");
 	else MessageBox::Show("Erro!");
 	SDLWin->Start();
 }
@@ -264,7 +278,7 @@ System::Void serial_app::commands::J0Conn_Click(System::Object ^ sender, System:
 //OK
 System::Void serial_app::commands::J1Conn_Click(System::Object ^ sender, System::EventArgs ^ e)
 {
-	if (SDLWin->JoystickConnect(1, Convert::ToInt16(J1Lst->Text) - 1)) MessageBox::Show("Joystick" + (Convert::ToInt16(J1Lst->Text) - 1) + "Conectado!");
+	if (SDLWin->JoystickConnect(1, Convert::ToInt16(J1Lst->Text))) MessageBox::Show("Joystick" + (Convert::ToInt16(J1Lst->Text) - 1) + "Conectado!");
 	else MessageBox::Show("Erro!");
 	SDLWin->Start();
 }
@@ -279,4 +293,9 @@ System::Void serial_app::commands::J0Disconn_Click(System::Object ^ sender, Syst
 System::Void serial_app::commands::J1Disconn_Click(System::Object ^ sender, System::EventArgs ^ e)
 {
 	SDLWin->JoystickDisconnect(1);
+}
+
+System::Void serial_app::commands::RefreshJoys_Click(System::Object ^ sender, System::EventArgs ^ e)
+{
+	listJoys();
 }

@@ -73,6 +73,8 @@ namespace serial_app {
 	private: System::Windows::Forms::NumericUpDown^  R0M1Corr;
 	private: System::Windows::Forms::Label^  J0A1Val;
 	private: System::Windows::Forms::Label^  J0A3Val;
+
+
 	private: System::Windows::Forms::GroupBox^  Joystick0box;
 	private: System::Windows::Forms::ComboBox^  J1Lst;
 
@@ -85,167 +87,10 @@ namespace serial_app {
 	private: System::Windows::Forms::NumericUpDown^  R1M1Corr;
 	private: System::Windows::Forms::Label^  J1A1Val;
 	private: System::Windows::Forms::Label^  J1A3Val;
+
+
 	private: System::Windows::Forms::GroupBox^  Joystick1box;
-	private: System::Windows::Forms::Button^  button1;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	private: System::Windows::Forms::Button^  RefreshJoys;
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -308,7 +153,7 @@ namespace serial_app {
 			this->J1A1Val = (gcnew System::Windows::Forms::Label());
 			this->J1A3Val = (gcnew System::Windows::Forms::Label());
 			this->Joystick1box = (gcnew System::Windows::Forms::GroupBox());
-			this->button1 = (gcnew System::Windows::Forms::Button());
+			this->RefreshJoys = (gcnew System::Windows::Forms::Button());
 			this->CommandsBox->SuspendLayout();
 			this->SerialTimerBox->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->TimerMilis))->BeginInit();
@@ -734,21 +579,22 @@ namespace serial_app {
 			this->Joystick1box->TabStop = false;
 			this->Joystick1box->Text = L"Joystick 1";
 			// 
-			// button1
+			// RefreshJoys
 			// 
-			this->button1->Location = System::Drawing::Point(571, 225);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(98, 23);
-			this->button1->TabIndex = 14;
-			this->button1->Text = L"Refresh Joysticks";
-			this->button1->UseVisualStyleBackColor = true;
+			this->RefreshJoys->Location = System::Drawing::Point(571, 225);
+			this->RefreshJoys->Name = L"RefreshJoys";
+			this->RefreshJoys->Size = System::Drawing::Size(98, 23);
+			this->RefreshJoys->TabIndex = 14;
+			this->RefreshJoys->Text = L"Refresh Joysticks";
+			this->RefreshJoys->UseVisualStyleBackColor = true;
+			this->RefreshJoys->Click += gcnew System::EventHandler(this, &commands::RefreshJoys_Click);
 			// 
 			// commands
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(728, 274);
-			this->Controls->Add(this->button1);
+			this->Controls->Add(this->RefreshJoys);
 			this->Controls->Add(this->Joystick1box);
 			this->Controls->Add(this->Joystick0box);
 			this->Controls->Add(this->SerialTimerBox);
@@ -802,11 +648,9 @@ namespace serial_app {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private: System::Void SerialTimer_Tick(System::Object^  sender, System::EventArgs^  e);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	private: System::Void RefreshJoys_Click(System::Object^  sender, System::EventArgs^  e);
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private: int JoyToHB(int, int);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	private: void JoystickWatch();
+	private: void JoystickWatch(int);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private: bool SendSerial(String^); //master
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -822,5 +666,6 @@ private: System::Void J0Disconn_Click(System::Object^  sender, System::EventArgs
 		 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 private: System::Void J1Disconn_Click(System::Object^  sender, System::EventArgs^  e);
 		 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+private: System::Void RefreshJoys_Click(System::Object^  sender, System::EventArgs^  e);
 };
 }
