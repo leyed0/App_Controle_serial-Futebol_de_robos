@@ -106,9 +106,10 @@ Void commands::Console_KeyDown(System::Object^  sender, System::Windows::Forms::
 		}
 		if (Write != "")
 		{
-			serial->Write(Write);
 			serialbusy = true;
+			serial->Write(Write);
 			Historico->Text += "W - " + Write + "\n";
+			serialbusy = false;
 		}
 		else
 		{
@@ -278,6 +279,7 @@ System::Void serial_app::commands::J0Disconn_Click(System::Object ^ sender, Syst
 {
 	Joystick0box->BackColor = System::Drawing::SystemColors::Control;
 	SDLWin->JoystickDisconnect(0);
+	SendSerial("M0.0.1.0.1.");
 }
 
 //OK
@@ -285,6 +287,7 @@ System::Void serial_app::commands::J1Disconn_Click(System::Object ^ sender, Syst
 {
 	Joystick1box->BackColor = System::Drawing::SystemColors::Control;
 	SDLWin->JoystickDisconnect(1);
+	SendSerial("M1.0.1.0.1.");
 }
 
 System::Void serial_app::commands::RefreshJoys_Click(System::Object ^ sender, System::EventArgs ^ e)

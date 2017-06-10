@@ -197,6 +197,8 @@
     <None Include="..\x64\Release\serial_app.exe" />
     <None Include="..\x64\Release\serial_app.exe.metagen" />
     <None Include="..\x64\Release\serial_app.pdb" />
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Xinput Map.png" />

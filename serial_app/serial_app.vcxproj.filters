@@ -90,6 +90,8 @@
     <None Include="..\Release\serial_app.pdb">
       <Filter>Release\x32</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Xinput Map.png">
